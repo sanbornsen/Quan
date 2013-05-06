@@ -22,11 +22,11 @@ class UserIdentity extends CUserIdentity
 		$users=array(
 			// username => password
 			$this->username => $password,
-			'admin'=>'admincp',
+			'admin'=>'31b5d7b1a473763500b9b0d66e1a63c2',
 		);
 		if(!isset($users[$this->username]))
 			$this->errorCode=self::ERROR_USERNAME_INVALID;
-		elseif($users[$this->username]!==$this->password)
+		elseif($users[$this->username]!==md5($this->password))
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else
 			$this->errorCode=self::ERROR_NONE;

@@ -7,6 +7,10 @@ body
 	background: #EFEFEF;
 }
 
+p { margin:0 }
+
+h4 { margin:0 }
+
 #page
 {
 	margin-top: 5px;
@@ -65,7 +69,7 @@ body
 
 #mainmenu ul li a
 {
-	color:#ffffff;
+	color:black;
 	background-color:transparent;
 	font-size:12px;
 	font-weight:bold;
@@ -121,6 +125,13 @@ div.flash-notice a
 div.flash-success a
 {
 	color:#264409;
+}
+
+div .hint
+{
+	margin: 0;
+	padding: 0;
+	color: #999;
 }
 
 div.form .rememberMe label
@@ -226,4 +237,29 @@ div.search-form
 .operations li a:hover
 {
 	background: #80CFFF;
+}
+.inpfield_error {
+    width:300px;
+    border:2px solid #dadada;
+    border-radius:7px;
+    font-size:10px;
+    color: red;
+    padding:5px;
+    margin-top:1px;    
+}
+
+.inpfield {
+    float:left;
+    width:300px;
+    border:2px solid #dadada;
+    border-radius:7px;
+    font-size:20px;
+    padding:5px;
+    margin-top:1px;    
+}
+
+.inpfield:focus { 
+    outline:none;
+    border-color:#9ecaed;
+    box-shadow:0 0 10px #9ecaed;
 }

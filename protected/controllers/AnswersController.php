@@ -63,7 +63,6 @@ class AnswersController extends Controller
 	public function actionCreate()
 	{
 		$model=new Answers;
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -112,9 +111,9 @@ class AnswersController extends Controller
 	{
 		$ans = Answers::model()->findByPk($id);
 		$ques = Question::model()->findByPk($ans->q_id);
-		$ans_auth = $ans->user_id;
-		$ques_auth = $ques->user_id;
-		if(Yii::app()->user->getId() == "admin" || Yii::app()->user->getId() == $ans->user_id || Yii::app()->user->getId() == $ques_auth->user_id)
+		$ques_auth = explode(" ",$ques->user_id);
+		$ans_auth = explode(" ",$ans->user_id);
+		if(Yii::app()->user->getId() == "admin" || Yii::app()->user->getId() == end($ans_auth) || Yii::app()->user->getId() == end($ques_auth))
 			$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

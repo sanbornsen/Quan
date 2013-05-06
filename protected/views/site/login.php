@@ -24,27 +24,27 @@ $this->breadcrumbs=array(
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<div class="row">
+	<div class="row_lpad">
 		<?php echo $form->labelEx($model,'username'); ?>
-		<?php echo $form->textField($model,'username'); ?>
-		<?php echo $form->error($model,'username'); ?>
+		<?php echo $form->textField($model,'username',array('class'=>'inpfield',)); ?>
+		<?php echo $form->error($model,'username',array('class'=>'inpfield_error')); ?>
 	</div>
 
-	<div class="row">
+	<div class="row_lpad">
 		<?php echo $form->labelEx($model,'password'); ?>
-		<?php echo $form->passwordField($model,'password'); ?>
-		<?php echo $form->error($model,'password'); ?>
+		<?php echo $form->passwordField($model,'password',array('class'=>'inpfield',)); ?>
+		<?php echo $form->error($model,'password',array('class'=>'inpfield_error')); ?>
 		
 	</div>
-
+	
 	<div class="row rememberMe">
 		<?php echo $form->checkBox($model,'rememberMe'); ?>
 		<?php echo $form->label($model,'rememberMe'); ?>
 		<?php echo $form->error($model,'rememberMe'); ?>
 	</div>
-
+	<hr> 	
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Login'); ?>
+		<?php echo CHtml::submitButton('Login',array('class'=>'inpfield',)); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

@@ -70,13 +70,16 @@ class UsersController extends Controller
 		if(isset($_POST['Users']))
 		{
 			$model->attributes=$_POST['Users'];
-			if($model->save())
+			$model->password = md5($_POST['Users']['password']);
+			if($model->save()){
 				$this->redirect(array('view','id'=>$model->user_id));
+			}
+				
 		}
-
 		$this->render('create',array(
-			'model'=>$model,
-		));
+				'model'=>$model,
+			));
+		
 	}
 
 	/**
@@ -89,11 +92,12 @@ class UsersController extends Controller
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		 $this->performAjaxValidation($model);
 
 		if(isset($_POST['Users']))
 		{
 			$model->attributes=$_POST['Users'];
+			$model->password = md5($_POST['Users']['password']);
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->user_id));
 		}

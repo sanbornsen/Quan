@@ -32,7 +32,7 @@ class QuestionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -57,7 +57,10 @@ class QuestionController extends Controller
 			$a_model->a_body = $_POST['Answers']['a_body'];
 			$a_model->q_id = $id;
 			$a_model->add_time = date("Y-m-d H:i:s");
-			$a_model->user_id = Yii::app()->user->getId();
+			if(!$_POST['anonyn'])
+				$a_model->user_id = Yii::app()->user->getId();
+			else 
+				$a_model->user_id = "Anonymus ".Yii::app()->user->getId();
 			if($a_model->save()){
 				$answers = Answers::model()->findAll("q_id = ".$id);
 				$this->render('view',array(
@@ -91,7 +94,10 @@ class QuestionController extends Controller
 		{
 			$model->attributes=$_POST['Question'];
 			$model->add_time = date("Y-m-d H:i:s");
-			$model->user_id = Yii::app()->user->getId();
+			if(!$_POST['anonyn'])
+				$model->user_id = Yii::app()->user->getId();
+			else 
+				$model->user_id = "Anonymus ".Yii::app()->user->getId();
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->q_id));
 		}

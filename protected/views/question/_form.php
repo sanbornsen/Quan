@@ -28,7 +28,8 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<input type="checkbox" name="anonyn"> Ask as anonymus  
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Ask' : 'Save'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

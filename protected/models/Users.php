@@ -41,11 +41,13 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('f_name, l_name, username, password, batch, stream, roll', 'required'),
+			array('f_name, l_name, email_id, username, password, batch, stream, roll', 'required'),
 			array('roll', 'numerical', 'integerOnly'=>true),
-			array('f_name, l_name, username, batch', 'length', 'max'=>30),
+			array('f_name, l_name, username, batch', 'length', 'max'=>50),
 			array('password, stream', 'length', 'max'=>50),
 			array('username', 'unique', 'attributeName'=> 'username', 'caseSensitive' => 'false'),
+			array('email_id', 'unique', 'attributeName'=> 'email_id', 'caseSensitive' => 'false'),
+			array('email_id','email'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('user_id, f_name, l_name, username, password, batch, stream, roll', 'safe', 'on'=>'search'),
@@ -62,7 +64,9 @@ class Users extends CActiveRecord
 		return array(
 		);
 	}
-
+	
+	
+	
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -72,6 +76,7 @@ class Users extends CActiveRecord
 			'user_id' => 'User',
 			'f_name' => 'First Name',
 			'l_name' => 'Last Name',
+			'email_id' => 'Email',
 			'username' => 'Username',
 			'password' => 'Password',
 			'batch' => 'Batch',
@@ -94,6 +99,7 @@ class Users extends CActiveRecord
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('f_name',$this->f_name,true);
 		$criteria->compare('l_name',$this->l_name,true);
+		$criteria->compare('email_id',$this->email_id,true);
 		$criteria->compare('username',$this->username,true);
 		$criteria->compare('password',$this->password,true);
 		$criteria->compare('batch',$this->batch,true);

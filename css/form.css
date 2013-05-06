@@ -63,6 +63,15 @@ div.form label
 div.form .row
 {
 	margin: 5px 0;
+	float : left;
+	padding-right : 200px;
+}
+
+div.form .row_lpad
+{
+	margin: 5px 0;
+	float : left;
+	padding-right : 20px;
 }
 
 div.form .hint
