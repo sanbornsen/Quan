@@ -28,15 +28,15 @@ class AnswersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('view'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','delete'),
+				'actions'=>array('create','voteup','votedown'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','update'),
+				'actions'=>array('admin','update','index'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -51,11 +51,56 @@ class AnswersController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$user = Users::model()->find('username LIKE "'.Yii::app()->user->getId().'"');
+		$u_id = $user->user_id;
+		$model = $this->loadModel($id);
+		$q_model = Question::model()->findByPk($model->q_id);
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
+			'q_model'=>$q_model,
+			'current_user_id'=>$u_id,
 		));
 	}
-
+	/**
+	 * Voting
+	 */
+	public function actionVoteup($id)
+		{
+			$model = $this->loadModel($id);
+			$curr_user = Users::model()->find('username LIKE "'.Yii::app()->user->getId().'"');
+			$voted = $model->vote;
+			if(!$voted){
+				$model->vote = $curr_user->user_id;
+				$model->save();		
+			}
+			else{
+				$pre_votes = explode("|", $voted);
+				array_push($pre_votes, $curr_user->user_id);
+				$array = implode("|", $pre_votes);
+				
+				$model->vote = $array;
+				$model->save();
+			}
+			$this->redirect(Yii::app()->request->urlReferrer);
+		}
+		
+		public function actionVotedown($id)
+		{
+			$model = $this->loadModel($id);
+			$curr_user = Users::model()->find('username LIKE "'.Yii::app()->user->getId().'"');
+			$voted = $model->vote;
+			$pre_votes = explode("|", $voted);
+			$array = array_keys($pre_votes, $curr_user->user_id);
+			unset($pre_votes[$array[0]]);
+			$arr = implode("|", $pre_votes);
+			$model->vote = $arr;
+			$model->save();
+			$this->redirect(Yii::app()->request->urlReferrer);
+		}
+	
+	
+	
+	
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.

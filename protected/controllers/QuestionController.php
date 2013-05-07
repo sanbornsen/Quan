@@ -32,7 +32,7 @@ class QuestionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete'),
+				'actions'=>array('create','update','delete','notification'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -51,21 +51,33 @@ class QuestionController extends Controller
 	 */
 	public function actionView($id)
 	{
-		
+		$user = Users::model()->find('username LIKE "'.Yii::app()->user->getId().'"');
+		$u_id = $user->user_id;
 		if(isset($_POST['Answers'])){
 			$a_model = new Answers;
+			$model_not = new Notification;
 			$a_model->a_body = $_POST['Answers']['a_body'];
 			$a_model->q_id = $id;
+			$model_not->q_id =$id;
 			$a_model->add_time = date("Y-m-d H:i:s");
-			if(!$_POST['anonyn'])
+			if(!$_POST['anonyn']){
 				$a_model->user_id = Yii::app()->user->getId();
-			else 
+				$model_not->person1 = Yii::app()->user->getId();
+			}
+			else {
 				$a_model->user_id = "Anonymus ".Yii::app()->user->getId();
+				$model_not->person1 = "Anonymus User";
+			}
+			$model = $this->loadModel($id);
+			$model_not->person2 = $model->user_id;
 			if($a_model->save()){
+				$model_not->activity = "<b>".$model_not->person1."</b> has ".CHtml::link(CHtml::encode("answered"), array('answers/view', 'id'=>$a_model->a_id))." a <b>".CHtml::link(CHtml::encode("Question"), array('view', 'id'=>$model->q_id))."</b> ";
+				$model_not->save();
 				$answers = Answers::model()->findAll("q_id = ".$id);
 				$this->render('view',array(
 				'model'=>$this->loadModel($id),
 				'answers'=>$answers,
+				'current_user_id'=>$u_id,
 				));
 			}
 		}
@@ -75,6 +87,7 @@ class QuestionController extends Controller
 			$this->render('view',array(
 				'model'=>$this->loadModel($id),
 				'answers'=>$answers,
+				'current_user_id'=>$u_id,
 			));
 		}
 	}
@@ -92,14 +105,26 @@ class QuestionController extends Controller
 
 		if(isset($_POST['Question']))
 		{
+			$model_not = new Notification;
+			
 			$model->attributes=$_POST['Question'];
 			$model->add_time = date("Y-m-d H:i:s");
-			if(!$_POST['anonyn'])
+			if(!$_POST['anonyn']){
 				$model->user_id = Yii::app()->user->getId();
-			else 
+				$model_not->person1 = Yii::app()->user->getId();
+			}
+			else{ 
 				$model->user_id = "Anonymus ".Yii::app()->user->getId();
-			if($model->save())
+				$model_not->person1 = "Anonymus User";
+			}
+			
+			if($model->save()){
+				$model_not->q_id = $model->q_id;
+				$model_not->activity = "<b>".$model_not->person1."</b> has added a new <b>".CHtml::link(CHtml::encode("Question"), array('view', 'id'=>$model->q_id))."</b>";
+				$model_not->save();
 				$this->redirect(array('view','id'=>$model->q_id));
+			}
+				
 		}
 
 		$this->render('create',array(
@@ -121,6 +146,10 @@ class QuestionController extends Controller
 
 		if(isset($_POST['Question']))
 		{
+			if($_POST['anonyn'])
+				$model->user_id = "Anonymus ".Yii::app()->user->getId();
+			else 
+				$model->user_id = Yii::app()->user->getId();
 			$model->attributes=$_POST['Question'];
 			$model->last_update = date("Y-m-d H:i:s");
 			if($model->save())
@@ -140,8 +169,11 @@ class QuestionController extends Controller
 	public function actionDelete($id)
 	{
 		$answers = Answers::model()->findAll("q_id = ".$id);
+		$not = Notification::model()->findAll("q_id = ".$id);
 		foreach ($answers as $ans)
 			$ans->delete();
+		foreach ($not as $n)
+			$n->delete();
 		$this->loadModel($id)->delete();
 		
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -159,7 +191,20 @@ class QuestionController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
+	
+	/**
+	 * Notificatio Action
+	 */
 
+	public function actionNotification()
+	{
+		$cur_usr = Yii::app()->user->getId();
+		$dataProvider=new CActiveDataProvider('Notification',array('criteria'=>array('order'=>'not_id DESC','condition'=>'person1 NOT LIKE "'.$cur_usr.'"'),));
+		$this->render('notification',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	
 	/**
 	 * Manages all models.
 	 */

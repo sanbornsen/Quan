@@ -238,7 +238,7 @@ div.search-form
 {
 	background: #80CFFF;
 }
-.inpfield_error {
+.inpfield_error { 
     width:300px;
     border:2px solid #dadada;
     border-radius:7px;

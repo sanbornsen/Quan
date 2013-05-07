@@ -13,7 +13,7 @@
 	<?php echo "by ".$userinfo->f_name." ".$userinfo->l_name; ?>
 	(<?php echo CHtml::encode($q_auth[0]); ?>)
 	<br />
-	<?php $answer = Answers::model()->findAll("q_id = ".$data->q_id);
+	<?php $answer = Answers::model()->findAll(array("condition"=>"q_id = ".$data->q_id,"order"=>"a_id DESC"));
 		  $answer_auth = array();
 		  foreach ($answer as $ans):
 		  		$ans_auth = explode("_", $ans->user_id);

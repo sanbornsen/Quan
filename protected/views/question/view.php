@@ -59,7 +59,7 @@ else
 	$usr = "admin";
 ?>
 <div>
-	<h4><b><?= $usr ?> </b> says : </h4>
+	<h4><b><?= $usr ?> </b><?= CHtml::link(CHtml::encode("says : "), array('answers/view', 'id'=>$ans->a_id));?></b> </h4>
 	<font size="3"><?= $ans->a_body ?></font>
 	<p class="hint">
 	<?php $date = explode(" ", $ans->add_time)?>
@@ -72,6 +72,34 @@ else
   			)
 		);?>
 	
+	<?php endif;?>
+	|
+	<?php if(Yii::app()->user->getId() != "admin"):
+			$voters = array();
+			if($ans->vote)
+				$voters = explode("|", $ans->vote);
+			echo "<b>(".sizeof($voters).")</b>";
+	?>
+		
+			
+			<?php 
+			if(in_array($current_user_id, $voters))
+				echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$ans->a_id),
+  					array(
+ 		   			'submit'=>array('answers/votedown', 'id'=>$ans->a_id),
+    	   			)
+				);
+			else 
+				echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$ans->a_id),
+  					array(
+ 		   			'submit'=>array('answers/voteup', 'id'=>$ans->a_id),
+    	   			)
+				);
+			?>
+		
+		
+		
+		
 	<?php endif;?>
 	</p>
 </div>
