@@ -13,6 +13,13 @@
 </head>
 
 <body>
+<?php 
+if(!Yii::app()->user->isGuest){
+	$user = Users::model()->find("username LIKE '".Yii::app()->user->getId()."'");
+	$last_not = Notification::model()->findAll("not_id > ".$user->last_not." AND person1 NOT LIKE '".$user->username."'");
+	$not_num = " (".count($last_not).")";
+}
+?>
 
 <?php $this->widget('bootstrap.widgets.TbNavbar',array(
     'items'=>array(
@@ -21,7 +28,7 @@
             'items'=>array(
                 array('label'=>'Home', 'url'=>array('/site/index')),
                 array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-		array('label'=>'Notification', 'url'=>array('/question/notification')),
+		array('label'=>'Notification'.$not_num, 'url'=>array('/question/notification')),
                 array('label'=>'Contact', 'url'=>array('/site/contact')),
                 array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 		array('label'=>'Register', 'url'=>array('/users/create'), 'visible'=>Yii::app()->user->isGuest),

@@ -202,8 +202,14 @@ class QuestionController extends Controller
 		$dataProvider=new CActiveDataProvider('Notification',array('criteria'=>array('order'=>'not_id DESC','condition'=>'person1 NOT LIKE "'.$cur_usr.'"'),
 																	'pagination'=>array('pageSize'=>100,),  
 											 ));
+		$user = Users::model()->find("username LIKE '".$cur_usr."'");
+		$last_not = $user->last_not;
+		$data = $dataProvider->getData();
+		$user->last_not = $data[0]->not_id;
+		$user->save();
 		$this->render('notification',array(
 			'dataProvider'=>$dataProvider,
+			'last_not' => $last_not,
 		));
 	}
 	

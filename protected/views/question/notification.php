@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Questions'=>array('index'),
-	$model->q_id,
+	"Notifications",
 );
 $q_auth = explode(" ",$model->user_id);
 if(end($q_auth) == Yii::app()->user->getId()){
