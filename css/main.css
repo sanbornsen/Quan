@@ -11,6 +11,11 @@ p { margin:0 }
 
 h4 { margin:0 }
 
+href {
+	color : blue;
+	font-size : 5;
+}
+
 #page
 {
 	margin-top: 5px;

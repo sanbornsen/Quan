@@ -69,13 +69,14 @@ class UsersController extends Controller
 
 		if(isset($_POST['Users']))
 		{
-			$model_not = new Notification;
 			$model->attributes=$_POST['Users'];
 			$model->password = md5($_POST['Users']['password']);
-			$model_not->person1 = $_POST['Users']['username'];
-			$model_not->activity = "<b>".$model_not->person1."</b> is now on Quan";
-			$model_not->save();
+				
 			if($model->save()){
+				$model_not = new Notification;
+				$model_not->person1 = $_POST['Users']['username'];
+				$model_not->activity = "<b>".$model_not->person1."</b> is now on Quan";
+				$model_not->save();
 				$this->redirect(array('view','id'=>$model->user_id));
 			}
 				

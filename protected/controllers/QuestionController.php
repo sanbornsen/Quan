@@ -199,7 +199,9 @@ class QuestionController extends Controller
 	public function actionNotification()
 	{
 		$cur_usr = Yii::app()->user->getId();
-		$dataProvider=new CActiveDataProvider('Notification',array('criteria'=>array('order'=>'not_id DESC','condition'=>'person1 NOT LIKE "'.$cur_usr.'"'),));
+		$dataProvider=new CActiveDataProvider('Notification',array('criteria'=>array('order'=>'not_id DESC','condition'=>'person1 NOT LIKE "'.$cur_usr.'"'),
+																	'pagination'=>array('pageSize'=>100,),  
+											 ));
 		$this->render('notification',array(
 			'dataProvider'=>$dataProvider,
 		));

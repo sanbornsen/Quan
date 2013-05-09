@@ -32,7 +32,7 @@ class AnswersController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','voteup','votedown'),
+				'actions'=>array('create','voteup','votedown','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -68,6 +68,16 @@ class AnswersController extends Controller
 		{
 			$model = $this->loadModel($id);
 			$curr_user = Users::model()->find('username LIKE "'.Yii::app()->user->getId().'"');
+			$answer_auth = $model->user_id;
+			$voter = $curr_user->username;
+			
+			$model_not = new Notification;
+			$model_not->person1 = $voter;
+			$model_not->person2 = $answer_auth;
+			$model_not->activity = "<b>".$voter."</b> has voted up an ".CHtml::link(CHtml::encode("answer"), array('answers/view', 'id'=>$id))." posted by ";
+			$model_not->a_id = $id;
+			$model_not->save();
+			
 			$voted = $model->vote;
 			if(!$voted){
 				$model->vote = $curr_user->user_id;
@@ -75,7 +85,8 @@ class AnswersController extends Controller
 			}
 			else{
 				$pre_votes = explode("|", $voted);
-				array_push($pre_votes, $curr_user->user_id);
+				if(!in_array($curr_user->user_id, $pre_votes))
+					array_push($pre_votes, $curr_user->user_id);
 				$array = implode("|", $pre_votes);
 				
 				$model->vote = $array;

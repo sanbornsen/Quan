@@ -3,7 +3,7 @@
 /* @var $model Answers */
 
 $this->breadcrumbs=array(
-	'Answers'=>array('index'),
+	'Answers'=>array('question/view', 'id'=>$q_model->q_id),
 	$model->a_id,
 );
 

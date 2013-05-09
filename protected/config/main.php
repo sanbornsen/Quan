@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Quan - The knowledge store β--',
+	'name'=>'Quan - The knowledge campus β--',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -60,7 +60,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=quan',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '31011993',
+			'password' => 'sanborn31011993@@',
 			'charset' => 'utf8',
 		),
 		
