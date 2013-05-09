@@ -31,9 +31,11 @@
 		  else 
 		  	echo "<b>".$answer_auth[0]."</b>, <b>".$answer_auth[1]."</b> and <b>".(sizeof($answer_auth)-2)."</b> others have given answers";
 	?>
-			</div>
+
 	<br>
 	<?php $date = explode(" ", $data->add_time)?>
 	Date : <?= $date[0] ?> | Time : <?= $date[1] ?>
-
+	</div>
 </div>
+
+<hr>

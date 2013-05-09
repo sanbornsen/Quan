@@ -1,0 +1,39 @@
+#page {
+    padding-top: 60px;
+}
+
+#footer
+{
+	padding: 10px;
+	margin: 10px 20px;
+	font-size: 0.8em;
+	text-align: center;
+	border-top: 1px solid #C9E0ED;
+}
+
+.hint
+{
+	margin: 0;
+	padding: 0;
+	color: #999;
+}
+
+.inpfield_error {
+    width:300px;
+    border:2px solid #dadada;
+    border-radius:7px;
+    font-size:10px;
+    color: red;
+    padding:5px;
+    margin-top:1px;
+}
+
+.inpfield {
+    float:left;
+    width:300px;
+    border:2px solid #dadada;
+    border-radius:7px;
+    font-size:20px;
+    padding:5px;
+    margin-top:1px;
+}

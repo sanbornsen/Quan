@@ -4,8 +4,14 @@
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
 // This is the main Web application configuration. Any writable
+
 // CWebApplication properties can be configured here.
+
+Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
+
+
 return array(
+	'theme' => 'theme',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Quan - The knowledge campus β--',
 
@@ -26,11 +32,15 @@ return array(
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'sanborn',
+			'generatorPaths'=>array(
+                		'bootstrap.gii',
+                        	),
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			//'ipFilters'=>array('127.0.0.1','::1'),
 		),
 		
 	),
+
 
 	// application components
 	'components'=>array(
@@ -40,6 +50,10 @@ return array(
 		),
 		// uncomment the following to enable URLs in path-format
 		
+		'bootstrap'=>array(
+      		      'class'=>'bootstrap.components.Bootstrap',
+        	),
+
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'showScriptName'=>false,
@@ -92,3 +106,5 @@ return array(
 		'adminEmail'=>'sanborn.sen@gmail.com',
 	),
 );
+
+
