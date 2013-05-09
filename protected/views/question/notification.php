@@ -31,11 +31,15 @@ else {
 	);
 }
 ?>
-<ul>
+
 <?php 
 foreach ($dataProvider->getData() as $data):
 ?>
-<li>
+<?php if($data->not_id > $last_not):?>
+	<div class = "notification-green">
+<?php else:?>
+	<div class = "notification-yellow">
+<?php endif;?>
 <?php 
 	$person1 = explode(" ", $data->person1);
 	$person2 = explode(" ", $data->person2);
@@ -61,6 +65,5 @@ foreach ($dataProvider->getData() as $data):
 	else 
 		echo $data->activity;
 ?>
-</li>
+</div>
 <?php endforeach;?>
-</ul>
