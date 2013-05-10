@@ -60,27 +60,27 @@ else
 			$voters = array();
 			if($model->vote)
 				$voters = explode("|", $model->vote);
-			echo "<b>(".sizeof($voters).")</b>";
 	?>
 		
 			
-			<?php 
-			if(in_array($current_user_id, $voters))
-				echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$model->a_id),
-  					array(
- 		   			'submit'=>array('answers/votedown', 'id'=>$model->a_id),
-    	   			)
-				);
+	<?php 
+		if(in_array($current_user_id, $voters))
+				echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$ans->a_id),
+		  			array(
+		 	  			'submit'=>array('answers/votedown', 'id'=>$ans->a_id),
+		  				'class' => 'label label-important'
+		       			)
+					);
 			else 
-				echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$model->a_id),
-  					array(
- 		   			'submit'=>array('answers/voteup', 'id'=>$model->a_id),
-    	   			)
+				echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$ans->a_id),
+		  			array(
+		 			'submit'=>array('answers/voteup', 'id'=>$ans->a_id),
+		  			'class' => 'label label-success'
+		    		)
 				);
+			
+			echo "&nbsp&nbsp&nbsp<span class = badge badge-inverse>".sizeof($voters)."</span>";
 			?>
-		
-		
-		
 		
 	<?php endif;?>
 	</p>
