@@ -206,7 +206,7 @@ class QuestionController extends Controller
 		$last_not = $user->last_not;
 		$data = $dataProvider->getData();
 		$user->last_not = $data[0]->not_id;
-		$user->save();
+		$user->save(false);
 		$this->render('notification',array(
 			'dataProvider'=>$dataProvider,
 			'last_not' => $last_not,
