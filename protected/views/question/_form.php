@@ -17,7 +17,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'q_body'); ?>
-		<?php echo $form->textArea($model,'q_body',array('rows'=>2, 'cols'=>99)); ?>
+		<?php echo $form->textArea($model,'q_body',array('id'=>'TestForm_textarea','class'=>'span9')); ?>
 		<?php echo $form->error($model,'q_body'); ?>
 	</div>
 
@@ -29,7 +29,8 @@
 
 	<div class="row buttons">
 		<input type="checkbox" name="anonyn"> Ask as anonymus  
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Ask' : 'Save'); ?>
+		<hr>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Ask' : 'Save',array('class'=>'btn btn-primary')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

@@ -65,41 +65,42 @@ else
 	<?php $date = explode(" ", $ans->add_time)?>
 	Date : <?= $date[0] ?> | Time : <?= $date[1] ?> | 
 	<?php if(Yii::app()->user->getId() == "admin" || Yii::app()->user->getId() == end($ans_auth) || Yii::app()->user->getId() == end($q_auth)):?>
-	<?php echo CHtml::link(CHtml::encode('Delete the answer'), array('answers/delete', 'id'=>$ans->a_id),
+	
+	
+	<?php echo CHtml::link(CHtml::encode('Delete'), array('answers/delete', 'id'=>$ans->a_id),
   			array(
  		   'submit'=>array('answers/delete', 'id'=>$ans->a_id),
-    	   'class' => 'delete','confirm'=>'This will remove the answer. Are you sure?'
+    	   'class' => 'label label-inverse','confirm'=>'This will remove the answer. Are you sure?'
   			)
 		);?>
 	
 	<?php endif;?>
-	|
+	
 	<?php if(Yii::app()->user->getId() != "admin"):
 			$voters = array();
 			if($ans->vote)
 				$voters = explode("|", $ans->vote);
-			echo "<b>(".sizeof($voters).")</b>";
 	?>
 		
 			
-			<?php 
-			if(in_array($current_user_id, $voters))
-				echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$ans->a_id),
-  					array(
- 		   			'submit'=>array('answers/votedown', 'id'=>$ans->a_id),
-    	   			)
-				);
-			else 
-				echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$ans->a_id),
-  					array(
- 		   			'submit'=>array('answers/voteup', 'id'=>$ans->a_id),
-    	   			)
-				);
-			?>
-		
-		
-		
-		
+	<?php 
+	if(in_array($current_user_id, $voters))
+		echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$ans->a_id),
+  			array(
+ 	  			'submit'=>array('answers/votedown', 'id'=>$ans->a_id),
+  				'class' => 'label label-important'
+       			)
+			);
+	else 
+		echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$ans->a_id),
+  			array(
+ 			'submit'=>array('answers/voteup', 'id'=>$ans->a_id),
+  			'class' => 'label label-success'
+    		)
+		);
+	
+	echo "&nbsp&nbsp&nbsp<span class = badge badge-inverse>".sizeof($voters)."</span>";
+	?>
 	<?php endif;?>
 	</p>
 </div>
