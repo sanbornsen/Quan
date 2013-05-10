@@ -47,9 +47,9 @@ else
 	<?php $date = explode(" ", $model->add_time)?>
 	Date : <?= $date[0] ?> | Time : <?= $date[1] ?> | 
 	<?php if(Yii::app()->user->getId() == "admin" || Yii::app()->user->getId() == end($ans_auth) || Yii::app()->user->getId() == end($q_auth)):?>
-	 <?php echo CHtml::link(CHtml::encode('Delete'), array('answers/delete', 'id'=>$ans->a_id),
+	 <?php echo CHtml::link(CHtml::encode('Delete'), array('answers/delete', 'id'=>$model->a_id),
                         array(
-                   'submit'=>array('answers/delete', 'id'=>$ans->a_id),
+                   'submit'=>array('answers/delete', 'id'=>$model->a_id),
            'class' => 'label label-inverse','confirm'=>'This will remove the answer. Are you sure?'
                         )
          );?>
@@ -65,16 +65,16 @@ else
 			
 	<?php 
 		if(in_array($current_user_id, $voters))
-				echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$ans->a_id),
+				echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$model->a_id),
 		  			array(
-		 	  			'submit'=>array('answers/votedown', 'id'=>$ans->a_id),
+		 	  			'submit'=>array('answers/votedown', 'id'=>$model->a_id),
 		  				'class' => 'label label-important'
 		       			)
 					);
 			else 
-				echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$ans->a_id),
+				echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$model->a_id),
 		  			array(
-		 			'submit'=>array('answers/voteup', 'id'=>$ans->a_id),
+		 			'submit'=>array('answers/voteup', 'id'=>$model->a_id),
 		  			'class' => 'label label-success'
 		    		)
 				);
