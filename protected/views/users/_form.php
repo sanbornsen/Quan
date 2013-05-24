@@ -48,7 +48,7 @@
 	<?php endif;?>
 	
 		<?php echo $form->labelEx($model,'batch'); ?>
-		<?php echo $form->dropDownList($model,'batch',array('2009-2013'=>'2009-2013','2010-2014'=>'2010-2014','2011-2015'=>'2011-2015','2012-2016'=>'2012-2016',), array('class'=>'span3','prompt'=>'Select Batch',)); ?>
+		<?php echo $form->dropDownList($model,'batch',array('2007-2011'=>'2007-2011','2008-2012'=>'2008-2012','2009-2013'=>'2009-2013','2010-2014'=>'2010-2014','2011-2015'=>'2011-2015','2012-2016'=>'2012-2016',), array('class'=>'span3','prompt'=>'Select Batch',)); ?>
 		<?php echo $form->error($model,'batch',array('class'=>'inpfield_error')); ?>
 
 		<?php echo $form->labelEx($model,'stream'); ?>
