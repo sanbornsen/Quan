@@ -14,7 +14,7 @@
 
 <body>
 <?php 
-if(!Yii::app()->user->isGuest){
+if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
 	$user = Users::model()->find("username LIKE '".Yii::app()->user->getId()."'");
 	$last_not = Notification::model()->findAll("not_id > ".$user->last_not." AND person1 NOT LIKE '".$user->username."'");
 	$not_num = " (".count($last_not).")";
