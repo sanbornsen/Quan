@@ -54,7 +54,7 @@ foreach ($dataProvider->getData() as $data):
 			}
 		else if($data->a_id != 0){
 			if(end($person1) == end($person2))
-				echo $data->activity."asked by <b>himself</b>";
+				echo $data->activity." <b>himself</b>";
 			elseif (Yii::app()->user->getId() != $data->person2)
 				echo $data->activity." <b>".$person2[0]."</b>";
 			else
