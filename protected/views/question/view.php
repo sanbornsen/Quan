@@ -1,5 +1,5 @@
 <script>
-function voteUp(vote,id)
+function voteUp(vote,id,baseurl)
 {
 var xmlhttp;
 var id1 = "voting"+id;
@@ -21,20 +21,20 @@ xmlhttp.onreadystatechange=function()
 		document.getElementById(id1).innerHTML="Down Vote";
 		$("#"+id1).removeClass("label-success");
 		$("#"+id1).addClass("label-important");
-		$("#"+id1).attr("onClick","voteUp(0,"+id+")");
+		$("#"+id1).attr("onClick","voteUp(0,"+id+",'"+baseurl+"')");
 		}
 	else{
 		document.getElementById(id1).innerHTML="Up Vote";
 		$("#"+id1).removeClass("label-important");
 		$("#"+id1).addClass("label-success");
-		$("#"+id1).attr("onClick","voteUp(1,"+id+")");
+		$("#"+id1).attr("onClick","voteUp(1,"+id+",'"+baseurl+"')");
 		}
 	}
   }
  if(vote == 1)
-	xmlhttp.open("GET","/quan/answers/voteup/"+id,true);
+	xmlhttp.open("GET",baseurl+"/answers/voteup/"+id,true);
 else
-	xmlhttp.open("GET","/quan/answers/votedown/"+id,true);
+	xmlhttp.open("GET",baseurl+"/answers/votedown/"+id,true);
 xmlhttp.send();
 }
 </script>
@@ -134,7 +134,7 @@ else
 			);
 	*/
 	?>
-	<a class="label label-important"  id="voting<?= $ans->a_id ?>" onclick='voteUp(0,<?= $ans->a_id ?>)'> Down Vote </a>
+	<a class="label label-important"  id="voting<?= $ans->a_id ?>" onclick='voteUp(0,<?= $ans->a_id ?>,"<?= Yii::app()->baseUrl ?>")'> Down Vote </a>
 	<?php
 	}
 	else{ 
@@ -146,7 +146,7 @@ else
 		);
 */
 	?>
-    <a class="label label-success"  id="voting<?= $ans->a_id ?>" onclick='voteUp(1,<?= $ans->a_id ?>)'> Up Vote </a>
+    <a class="label label-success"  id="voting<?= $ans->a_id ?>" onclick='voteUp(1,<?= $ans->a_id ?>,"<?= Yii::app()->baseUrl ?>")'> Up Vote </a>
     
     <?php 
 	}
