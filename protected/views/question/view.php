@@ -1,3 +1,44 @@
+<script>
+function voteUp(vote,id)
+{
+var xmlhttp;
+var id1 = "voting"+id;
+var id2 = "voteup"+id;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById(id2).innerHTML=xmlhttp.responseText;
+	if(vote == 1){
+		document.getElementById(id1).innerHTML="Down Vote";
+		$("#"+id1).removeClass("label-success");
+		$("#"+id1).addClass("label-important");
+		$("#"+id1).attr("onClick","voteUp(0,"+id+")");
+		}
+	else{
+		document.getElementById(id1).innerHTML="Up Vote";
+		$("#"+id1).removeClass("label-important");
+		$("#"+id1).addClass("label-success");
+		$("#"+id1).attr("onClick","voteUp(1,"+id+")");
+		}
+	}
+  }
+ if(vote == 1)
+	xmlhttp.open("GET","/quan/answers/voteup/"+id,true);
+else
+	xmlhttp.open("GET","/quan/answers/votedown/"+id,true);
+xmlhttp.send();
+}
+</script>
+
 <?php
 /* @var $this QuestionController */
 /* @var $model Question */
@@ -84,22 +125,32 @@ else
 		
 			
 	<?php 
-	if(in_array($current_user_id, $voters))
-		echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$ans->a_id),
+	if(in_array($current_user_id, $voters)){
+	/*	echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$ans->a_id),
   			array(
  	  			'submit'=>array('answers/votedown', 'id'=>$ans->a_id),
   				'class' => 'label label-important'
        			)
 			);
-	else 
-		echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$ans->a_id),
+	*/
+	?>
+	<a class="label label-important"  id="voting<?= $ans->a_id ?>" onclick='voteUp(0,<?= $ans->a_id ?>)'> Down Vote </a>
+	<?php
+	}
+	else{ 
+/*		echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$ans->a_id),
   			array(
  			'submit'=>array('answers/voteup', 'id'=>$ans->a_id),
   			'class' => 'label label-success'
     		)
 		);
-	
-	echo "&nbsp&nbsp&nbsp<span class = badge badge-inverse>".sizeof($voters)."</span>";
+*/
+	?>
+    <a class="label label-success"  id="voting<?= $ans->a_id ?>" onclick='voteUp(1,<?= $ans->a_id ?>)'> Up Vote </a>
+    
+    <?php 
+	}
+	echo "&nbsp&nbsp&nbsp<span id='voteup".$ans->a_id."' class='badge badge-inverse'>".sizeof($voters)."</span>";
 	?>
 	<?php endif;?>
 	</p>

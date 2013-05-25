@@ -79,20 +79,23 @@ class AnswersController extends Controller
 			$model_not->save();
 			
 			$voted = $model->vote;
+			$size = 0;
 			if(!$voted){
 				$model->vote = $curr_user->user_id;
-				$model->save();		
+				$model->save();
+				$size = 1;		
 			}
 			else{
 				$pre_votes = explode("|", $voted);
 				if(!in_array($curr_user->user_id, $pre_votes))
 					array_push($pre_votes, $curr_user->user_id);
+				$size = sizeof($pre_votes);
 				$array = implode("|", $pre_votes);
 				
 				$model->vote = $array;
 				$model->save();
 			}
-			$this->redirect(Yii::app()->request->urlReferrer);
+			echo $size;
 		}
 		
 		public function actionVotedown($id)
@@ -103,10 +106,11 @@ class AnswersController extends Controller
 			$pre_votes = explode("|", $voted);
 			$array = array_keys($pre_votes, $curr_user->user_id);
 			unset($pre_votes[$array[0]]);
+			$size = sizeof($pre_votes);
 			$arr = implode("|", $pre_votes);
 			$model->vote = $arr;
 			$model->save();
-			$this->redirect(Yii::app()->request->urlReferrer);
+			echo $size;
 		}
 	
 	
