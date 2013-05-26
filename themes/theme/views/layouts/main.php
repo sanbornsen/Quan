@@ -11,7 +11,46 @@
 
 	<?php Yii::app()->bootstrap->register(); ?>
 </head>
-
+<script>
+function voteUp(vote,id,baseurl)
+{
+var xmlhttp;
+var id1 = "voting"+id;
+var id2 = "voteup"+id;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById(id2).innerHTML=xmlhttp.responseText;
+	if(vote == 1){
+		document.getElementById(id1).innerHTML="Down Vote";
+		$("#"+id1).removeClass("label-success");
+		$("#"+id1).addClass("label-important");
+		$("#"+id1).attr("onClick","voteUp(0,"+id+",'"+baseurl+"')");
+		}
+	else{
+		document.getElementById(id1).innerHTML="Up Vote";
+		$("#"+id1).removeClass("label-important");
+		$("#"+id1).addClass("label-success");
+		$("#"+id1).attr("onClick","voteUp(1,"+id+",'"+baseurl+"')");
+		}
+	}
+  }
+ if(vote == 1)
+	xmlhttp.open("GET",baseurl+"/answers/voteup/"+id,true);
+else
+	xmlhttp.open("GET",baseurl+"/answers/votedown/"+id,true);
+xmlhttp.send();
+}
+</script>
 <body>
 <?php 
 if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
