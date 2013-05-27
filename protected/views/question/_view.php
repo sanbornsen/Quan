@@ -10,17 +10,25 @@
 	<br />
 	<?php $q_auth = explode(" ", $data->user_id)?>
 	<?php $userinfo = Users::model()->find('username LIKE "'.$q_auth[0].'"');?>
-	<?php echo "by ".$userinfo->f_name." ".$userinfo->l_name; ?>
-	(<?php echo CHtml::encode($q_auth[0]); ?>)
+	<?php echo "by ".ucwords($userinfo->f_name)." ".ucwords($userinfo->l_name); ?>
+	<?php if($q_auth[0] == "Anonymus") echo CHtml::encode($q_auth[0]); ?>
 	<br />
 	<?php $answer = Answers::model()->findAll(array("condition"=>"q_id = ".$data->q_id,"order"=>"a_id DESC"));
 		  $answer_auth = array();
 		  foreach ($answer as $ans):
-		  		$ans_auth = explode("_", $ans->user_id);
-		  		$ans_auth = explode(" ", $ans_auth[0]);
-		  		if(!in_array($ans_auth[0], $answer_auth))
-			  		array_push($answer_auth, $ans_auth[0]);
-		  endforeach;?>
+		  		$ans_auth = explode(" ", $ans->user_id);
+		  		if($ans_auth[0] != "Anonymus"){
+		  			$name = Users::model()->find("username LIKE '".$ans_auth[0]."'");
+		  			$name = ucwords($name->f_name)." ".ucwords($name->l_name);
+		  		}
+		  		else 
+		  			$name = $ans_auth[0];
+		  		
+		  		if(!in_array($name, $answer_auth))
+			  		array_push($answer_auth, $name);
+		  endforeach;
+		 ?>
+		  
 		 <div class="hint">
 	<?php if (sizeof($answer_auth)==0)
 		  	echo "Be the first one to answer this question";
