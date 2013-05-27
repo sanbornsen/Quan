@@ -9,9 +9,6 @@
  * @property string $l_name
  * @property string $username
  * @property string $password
- * @property string $batch
- * @property string $stream
- * @property integer $roll
  */
 class Users extends CActiveRecord
 {
@@ -41,16 +38,15 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('f_name, l_name, email_id, username, password, batch, stream, roll', 'required'),
-			array('roll', 'numerical', 'integerOnly'=>true),
-			array('f_name, l_name, username, batch', 'length', 'max'=>50),
-			array('password, stream', 'length', 'max'=>50),
+			array('f_name, l_name, email_id, username, password', 'required'),
+			array('f_name, l_name, username', 'length', 'max'=>50),
+			array('password', 'length', 'max'=>50),
 			array('username', 'unique', 'attributeName'=> 'username', 'caseSensitive' => 'false'),
 			array('email_id', 'unique', 'attributeName'=> 'email_id', 'caseSensitive' => 'false'),
 			array('email_id','email'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('user_id, f_name, l_name, username, password, batch, stream, roll', 'safe', 'on'=>'search'),
+			array('user_id, f_name, l_name, username, email_id','safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,9 +75,7 @@ class Users extends CActiveRecord
 			'email_id' => 'Email',
 			'username' => 'Username',
 			'password' => 'Password',
-			'batch' => 'Batch',
-			'stream' => 'Stream',
-			'roll' => 'Roll',
+			
 		);
 	}
 
@@ -102,9 +96,7 @@ class Users extends CActiveRecord
 		$criteria->compare('email_id',$this->email_id,true);
 		$criteria->compare('username',$this->username,true);
 		$criteria->compare('password',$this->password,true);
-		$criteria->compare('batch',$this->batch,true);
-		$criteria->compare('stream',$this->stream,true);
-		$criteria->compare('roll',$this->roll);
+		
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -51,6 +51,7 @@ class UsersController extends Controller
 	 */
 	public function actionView($id)
 	{
+	$id = (($id/10000000000)-342)/77;
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -66,7 +67,6 @@ class UsersController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
-
 		if(isset($_POST['Users']))
 		{
 			$model->attributes=$_POST['Users'];

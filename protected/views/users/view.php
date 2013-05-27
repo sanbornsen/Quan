@@ -16,7 +16,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Users #<?php echo $model->user_id; ?></h1>
+<h1><?php echo $model->f_name." ".$model->l_name; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -24,10 +24,5 @@ $this->menu=array(
 		'user_id',
 		'f_name',
 		'l_name',
-		'username',
-		'password',
-		'batch',
-		'stream',
-		'roll',
 	),
 )); ?>
