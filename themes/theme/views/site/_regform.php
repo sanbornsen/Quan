@@ -5,7 +5,7 @@
 ?>
 
 <div class="form">
-<div class="span5">
+<div class="span3" style="padding-left:90px">
 <h3>Register</h3>
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id'=>'users-form',

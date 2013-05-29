@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 ?>
 <div class="form well">
-<div class="span5">
+<div class="span5" style="padding-left:60px">
 <h3><span style="padding-left:30px">Login</span></h3>
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'login-form',
