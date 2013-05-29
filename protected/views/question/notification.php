@@ -43,27 +43,36 @@ foreach ($dataProvider->getData() as $data):
 <?php 
 	$person1 = explode(" ", $data->person1);
 	$person2 = explode(" ", $data->person2);
-	if($data->person2 != ''){
-		if($data->q_id != 0){
-			if(end($person1) == end($person2))
-				echo $data->activity."asked by <b>himself</b>";
-			elseif (Yii::app()->user->getId() != $data->person2)
-				echo $data->activity."asked by <b>".$person2[0]."</b>";
-			else
-				echo $data->activity."asked by <b>you</b>";
-			}
-		else if($data->a_id != 0){
-			if(end($person1) == end($person2))
-				echo $data->activity." <b>himself</b>";
-			elseif (Yii::app()->user->getId() != $data->person2)
-				echo $data->activity." <b>".$person2[0]."</b>";
-			else
-				echo $data->activity." <b>you</b>";
-			}
-	}
-
+	$person1_model = Users::model()->find("username LIKE '".end($person1)."'");
+	$person2_model = Users::model()->find("username = '".end($person2)."'");
+	if($person1_model)
+		$person1_name = ucwords($person1_model->f_name)." ".ucwords($person1_model->l_name);
+	else
+		$person1_name = end($person1);
+	if($person2_model)
+		$person2_name = ucwords($person2_model->f_name)." ".ucwords($person2_model->l_name);
 	else 
-		echo $data->activity;
+		$person2_name = end($person2);
+			
+	if($data->activity == "answer"){ // Notification for some one answering on a question
+		if(end($person1) == end($person2)) // If some one answer on his own question
+			echo $person1_name." has ".CHtml::link(CHtml::encode("answered"), array('answers/view', 'id'=>$data->a_id))." a ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id))." asked by himself.";
+		elseif (Yii::app()->user->getId() != $data->person2) // If the question is not posted by the user or the same person who answerd
+			echo $person1_name." has ".CHtml::link(CHtml::encode("answered"), array('answers/view', 'id'=>$data->a_id))." a ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id))." asked by ".$person2_name.".";
+		else // Here the answer is given to a question posted by the current user 
+			echo $person1_name." has ".CHtml::link(CHtml::encode("answered"), array('answers/view', 'id'=>$data->a_id))." a ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id))." asked by you.";
+		}
+	if($data->activity == "voteup"){ // Notification for some one voting on a answer
+		if(end($person1) == end($person2)) // If some one vote on his own posted answer
+			echo $person1_name." has voted up an ".CHtml::link(CHtml::encode("Answer"), array('answers/view', 'id'=>$data->a_id))." posted by himself.";
+		elseif (Yii::app()->user->getId() != $data->person2) // Both person 1 and 2 are distinct
+			echo $person1_name." has voted up an ".CHtml::link(CHtml::encode("Answer"), array('answers/view', 'id'=>$data->a_id))." posted by ".$person2_name.".";
+		else // voted on an answer posted by the current user
+			echo $person1_name." has voted up an ".CHtml::link(CHtml::encode("Answer"), array('answers/view', 'id'=>$data->a_id))." posted by you.";
+		}
+	if($data->activity == "question"){ // Who ever asked a new question
+		echo $person1_name." has asked a new ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id)).".";
+	}
 ?>
 </div>
 <?php endforeach;?>

@@ -74,7 +74,8 @@ class AnswersController extends Controller
 			$model_not = new Notification;
 			$model_not->person1 = $voter;
 			$model_not->person2 = $answer_auth;
-			$model_not->activity = "<b>".$voter."</b> has voted up an ".CHtml::link(CHtml::encode("answer"), array('answers/view', 'id'=>$id))." posted by ";
+			//$model_not->activity = "<b>".$voter."</b> has voted up an ".CHtml::link(CHtml::encode("answer"), array('answers/view', 'id'=>$id))." posted by ";
+			$model_not->activity = "voteup";
 			$model_not->a_id = $id;
 			$model_not->save();
 			
@@ -102,6 +103,8 @@ class AnswersController extends Controller
 		{
 			$model = $this->loadModel($id);
 			$curr_user = Users::model()->find('username LIKE "'.Yii::app()->user->getId().'"');
+			$sql = "person1 LIKE '".$curr_user->username."' AND a_id = ".$id." AND activity LIKE 'voteup'";
+			Notification::model()->deleteAll($sql); //While voting down, notification for voting will be deleted
 			$voted = $model->vote;
 			$pre_votes = explode("|", $voted);
 			$array = array_keys($pre_votes, $curr_user->user_id);

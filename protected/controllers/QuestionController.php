@@ -53,6 +53,9 @@ class QuestionController extends Controller
 	{
 		$user = Users::model()->find('username LIKE "'.Yii::app()->user->getId().'"');
 		$u_id = $user->user_id;
+		
+		//Answers are being posted here
+		
 		if(isset($_POST['Answers'])){
 			$a_model = new Answers;
 			$model_not = new Notification;
@@ -65,13 +68,15 @@ class QuestionController extends Controller
 				$model_not->person1 = Yii::app()->user->getId();
 			}
 			else {
-				$a_model->user_id = "Anonymus ".Yii::app()->user->getId();
-				$model_not->person1 = "Anonymus User";
+				$a_model->user_id = "Anonymous ".Yii::app()->user->getId();
+				$model_not->person1 = "Anonymous User";
 			}
 			$model = $this->loadModel($id);
 			$model_not->person2 = $model->user_id;
 			if($a_model->save()){
-				$model_not->activity = "<b>".$model_not->person1."</b> has ".CHtml::link(CHtml::encode("answered"), array('answers/view', 'id'=>$a_model->a_id))." a <b>".CHtml::link(CHtml::encode("Question"), array('view', 'id'=>$model->q_id))."</b> ";
+				//$model_not->activity = "<b>".$model_not->person1."</b> has ".CHtml::link(CHtml::encode("answered"), array('answers/view', 'id'=>$a_model->a_id))." a <b>".CHtml::link(CHtml::encode("Question"), array('view', 'id'=>$model->q_id))."</b> ";
+				$model_not->activity = "answer";  
+				$model_not->a_id = $a_model->a_id;
 				$model_not->save();
 				$answers = Answers::model()->findAll("q_id = ".$id);
 				$this->render('view',array(
@@ -99,14 +104,14 @@ class QuestionController extends Controller
 	public function actionCreate()
 	{
 		$model=new Question;
-
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Question']))
 		{
 			$model_not = new Notification;
-			
+
 			$model->attributes=$_POST['Question'];
 			$model->add_time = date("Y-m-d H:i:s");
 			if(!$_POST['anonyn']){
@@ -114,13 +119,14 @@ class QuestionController extends Controller
 				$model_not->person1 = Yii::app()->user->getId();
 			}
 			else{ 
-				$model->user_id = "Anonymus ".Yii::app()->user->getId();
-				$model_not->person1 = "Anonymus User";
+				$model->user_id = "Anonymous ".Yii::app()->user->getId();
+				$model_not->person1 = "Anonymous User";
 			}
 			
 			if($model->save()){
 				$model_not->q_id = $model->q_id;
-				$model_not->activity = "<b>".$model_not->person1."</b> has added a new <b>".CHtml::link(CHtml::encode("Question"), array('view', 'id'=>$model->q_id))."</b>";
+				//$model_not->activity = "<b>".$model_not->person1."</b> has added a new <b>".CHtml::link(CHtml::encode("Question"), array('view', 'id'=>$model->q_id))."</b>";
+				$model_not->activity = "question";
 				$model_not->save();
 				$this->redirect(array('view','id'=>$model->q_id));
 			}
@@ -147,7 +153,7 @@ class QuestionController extends Controller
 		if(isset($_POST['Question']))
 		{
 			if($_POST['anonyn'])
-				$model->user_id = "Anonymus ".Yii::app()->user->getId();
+				$model->user_id = "Anonymous ".Yii::app()->user->getId();
 			else 
 				$model->user_id = Yii::app()->user->getId();
 			$model->attributes=$_POST['Question'];
