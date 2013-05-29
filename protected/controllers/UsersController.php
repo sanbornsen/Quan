@@ -73,10 +73,6 @@ class UsersController extends Controller
 			$model->password = md5($_POST['Users']['password']);
 				
 			if($model->save()){
-				$model_not = new Notification;
-				$model_not->person1 = $_POST['Users']['username'];
-				$model_not->activity = "<b>".$model_not->person1."</b> is now on Quan";
-				$model_not->save();
 				$this->redirect(array('view','id'=>$model->user_id));
 			}
 				
