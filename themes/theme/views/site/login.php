@@ -8,19 +8,17 @@ $this->breadcrumbs=array(
 	'Login',
 );
 ?>
-
-<h1>Login</h1>
-
-<div class="form">
+<div class="form well">
+<div class="span5">
+<h3><span style="padding-left:30px">Login</span></h3>
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'login-form',
 	'enableClientValidation'=>true,
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),
+	'htmlOptions'=>array('class'=>'span5'),
 )); ?>
-
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<div class="row_lpad">
 		<?php //echo $form->labelEx($model,'username'); ?>
@@ -40,11 +38,16 @@ $this->breadcrumbs=array(
 		<span class ="hint" style="font-size:10px">Remember me next time</span>
 		<?php echo $form->error($model,'rememberMe'); ?>
 	</div>
-	<hr> 	
-	<div class="row_lpad buttons">
+	<div class="row_lpad buttons" style="padding-top:10px">
 		<?php //echo CHtml::submitButton('Login',array('class'=>'inpfield','type'=>'primary',)); ?>
 		<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'submit', 'type'=>'primary', 'label'=>'Login')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
+</div>
+<?php $user = new Users;?>
+<?php echo $this->renderPartial('_regform', array('model'=>$user)); ?>
+
 </div><!-- form -->
+<br>
+

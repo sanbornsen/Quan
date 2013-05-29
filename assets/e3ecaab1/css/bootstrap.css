@@ -3101,6 +3101,8 @@ table th[class*="span"],
 
 .well {
   min-height: 20px;
+  min-width: 1130px;
+  float:left;
   padding: 19px;
   margin-bottom: 20px;
   background-color: #f5f5f5;

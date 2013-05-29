@@ -4,25 +4,22 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="form">
+<div class="form" style="padding-left:30px">
 <script src="<?php echo Yii::app()->baseUrl.'/ckeditor/ckeditor.js'; ?>"></script>
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'answers-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
-
 	<?php echo $form->errorSummary($model); ?>
 	
 	<div class="row">
-		<?php echo $form->labelEx($model,'a_body'); ?>
-		<?php echo $form->textArea($model,'a_body',array('id'=>'editor1', 'rows'=>3, 'cols'=>50)); ?>
+		<?php echo $form->textArea($model,'a_body',array('id'=>'editor1',)); ?>
 		<?php echo $form->error($model,'a_body'); ?>
 	</div>
 
-	<div class="row buttons">
-		<input type="checkbox" name="anonyn"> Answer as anonymus <hr>
+	<div class="row buttons" style="padding-top:10px">
+		<input type="checkbox" name="anonyn"> <span style="font-size:10px"><b>Answer as anonymus</b></span> 
 		
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Answer' : 'Save',array('class'=>'btn btn-primary')); ?>
 	</div>
