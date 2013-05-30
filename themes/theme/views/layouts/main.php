@@ -10,6 +10,8 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
 	<?php Yii::app()->bootstrap->register(); ?>
+	
+
 </head>
 <script>
 function voteUp(vote,id,baseurl)
@@ -50,8 +52,45 @@ else
 	xmlhttp.open("GET",baseurl+"/answers/votedown/"+id,true);
 xmlhttp.send();
 }
+
+
+
+function waitPreloadPage() { //DOM
+if (document.getElementById){
+document.getElementById('prepage').style.visibility='hidden';
+}else{
+if (document.layers){ //NS4
+document.prepage.visibility = 'hidden';
+}
+else { //IE4
+document.all.prepage.style.visibility = 'hidden';
+}
+}
+}
 </script>
-<body>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+    var defaultSearchVal = "Search for Questions";
+
+    $('.searchClickClear').focus(function(){
+        curDefaultVal = $(this).val();
+        if(curDefaultVal==defaultSearchVal)
+            $(this).val('');
+    });
+
+    $('.searchClickClear').blur(function(){
+        if ($(this).val() == "") {
+            $(this).val(defaultSearchVal);
+        }
+    });
+});
+</script>
+<body onLoad="waitPreloadPage();">
+<DIV id="prepage" style="position:absolute; font-family:arial; font-size:16; left:0px; top:0px; background-color:white; layer-background-color:white; height:100%; width:100%;"> 
+<TABLE width=100%><TR><TD><B>Loading ... ... Please wait!</B></TD></TR></TABLE>
+</DIV>
 <?php 
 if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
 	$user = Users::model()->find("username LIKE '".Yii::app()->user->getId()."'");
@@ -77,24 +116,49 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
 )); ?>
 
 <div class="container" id="page">
+	<?php if(!Yii::app()->user->isGuest):?>
+           <center>
+                <form action="<?= $this->createAbsoluteUrl('products/index') ?>" method="GET" id="search-form" autocomplete="off">
+				<select class="styled-select" id="TestForm_dropdown" name="choice">
+					<option value="People">People</option>
+					<option value="Question">Question</option>
+				</select>
+				<?php $this->widget('CAutoComplete', array(
+                            'name'=>'search',
+                            'id'=>'input-box',
+                            'attribute'=>'search',
+                            'url'=> $this->createAbsoluteUrl('products/suggestions'),
+                            'value'=>'Search for Questions',
+                            'minChars'=>2,
+                            'scroll'=>false,
+                            'resultsClass'=>'searchAutoComplete ac_results',
+                            'htmlOptions'=> array('class'=>"searchClickClear span5"),
+                            'methodChain'=>'.result(function(){$("form#search-form").submit();})'
+                    )); ?>
+                    <input type="submit" class="srchbtn btn-primary" style="margin-top:-10px; margin-left:-76px" id="submit-button" value="Search"/>
+                </form>
+            </center>
+    <?php endif;?>
 
 	<?php if(isset($this->breadcrumbs)):?>
 		<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 			'links'=>$this->breadcrumbs,
 		)); ?><!-- breadcrumbs -->
 	<?php endif?>
-
+	
 	<?php echo $content; ?>
 
 	<div class="clear"></div>
 
 	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
+		Copyright &copy; <?php echo date('Y'); ?> by Quanz.<br/>
 		All Rights Reserved.<br/>
-		<?php echo "Team Quan"; ?>
+		<?php echo "Team Quanz"; ?>
 	</div><!-- footer -->
 
 </div><!-- page -->
 
 </body>
 </html>
+
+
