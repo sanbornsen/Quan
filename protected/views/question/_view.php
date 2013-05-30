@@ -3,7 +3,7 @@
 /* @var $data Question */
 ?>
 
-<div class="view">
+<div class="view question">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('q_body')); ?>:
 	<?php echo CHtml::link(CHtml::encode($data->q_body), array('view', 'id'=>$data->q_id)); ?></b>
