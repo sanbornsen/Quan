@@ -118,7 +118,7 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
 <div class="container" id="page">
 	<?php if(!Yii::app()->user->isGuest):?>
            <center>
-                <form action="<?= $this->createAbsoluteUrl('products/index') ?>" method="GET" id="search-form" autocomplete="off">
+                <form action="<?= $this->createAbsoluteUrl('site/search') ?>" method="GET" id="search-form" autocomplete="off">
 				<select class="styled-select" id="TestForm_dropdown" name="choice">
 					<option value="People">People</option>
 					<option value="Question">Question</option>
