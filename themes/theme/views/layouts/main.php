@@ -118,16 +118,16 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
 <div class="container" id="page">
 	<?php if(!Yii::app()->user->isGuest):?>
            <center>
-                <form action="<?= $this->createAbsoluteUrl('site/search') ?>" method="GET" id="search-form" autocomplete="off">
+                <form action="<?= $this->createAbsoluteUrl('question/search') ?>" method="GET" id="search-form" autocomplete="off">
 				<select class="styled-select" id="TestForm_dropdown" name="choice">
-					<option value="People">People</option>
 					<option value="Question">Question</option>
+					<option value="People">People</option>
 				</select>
 				<?php $this->widget('CAutoComplete', array(
                             'name'=>'search',
                             'id'=>'input-box',
                             'attribute'=>'search',
-                            'url'=> $this->createAbsoluteUrl('products/suggestions'),
+                            'url'=> $this->createAbsoluteUrl('question/suggestions'),
                             'value'=>'Search for Questions',
                             'minChars'=>2,
                             'scroll'=>false,

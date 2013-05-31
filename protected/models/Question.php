@@ -94,4 +94,48 @@ class Question extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	private function keyword($word)
+	{
+		$what = trim($word);
+		return explode(" ", $what);
+	}
+	
+	public function searchQuestion($what)
+	{
+		$result = Question::model()->findAll("q_body LIKE '".$what."'");
+		if(sizeof($result) == 1)
+			return $result;
+		else{
+			$keyword = self::keyword($what);
+			$sum = 1;
+			$size = sizeof($keyword);
+			for($i = 0; $i < $size; $i++)
+	        	{
+	        		$sum = $sum + $i + 1; 
+	        		if(strlen($keyword[$i]) == 1)
+	        			unset($keyword[$i]);
+	        				
+	       			if($i == 0)
+	        			{
+	        				$cond = "CASE WHEN  q_body LIKE '%".$keyword[$i]."%' THEN ".($size-$i)." ELSE 0 END";
+	        			}
+	       			else
+	        			{ 
+	        				$cond .= " + CASE WHEN q_body LIKE '%".$keyword[$i]."%' THEN ".($size-$i)." ELSE 0 END";
+	        			}
+	        	}
+	        $sql = "SELECT *
+	    					FROM (
+								SELECT * ,(
+	                                      ".$cond." 
+	 									   ) AS numMatches
+										    FROM question
+										    ) AS t
+								 WHERE numMatches >= 1
+					ORDER BY numMatches DESC";
+	        $question = Question::model()->findAllBySql($sql);
+	        return $question;
+		}
+	}
 }

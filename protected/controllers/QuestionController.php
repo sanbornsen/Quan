@@ -32,7 +32,7 @@ class QuestionController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','notification'),
+				'actions'=>array('create','update','delete','notification','search','suggestions'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -233,6 +233,43 @@ class QuestionController extends Controller
 			'model'=>$model,
 		));
 	}
+	
+	/**
+	 * Question search action
+	 */
+	public function actionSearch()
+	{
+		if($_GET['choice']=="People"){
+			$result = Users::searchUser($_GET['search']);
+		}
+		else{
+			$result = Question::searchQuestion($_GET['search']);
+			if(sizeof($result)>1){
+				$dataProvider=new CArrayDataProvider($result,array('keyField' => 'q_id',));
+				$this->render('index',array(
+					'dataProvider'=>$dataProvider,
+				));
+			}
+			else
+			{
+				$id = $result[0]->q_id;
+				self::actionView($id);
+			} 
+		}
+	}
+	
+	/**
+	 * Question suggestion action
+	 */
+	public function actionSuggestions()
+	{
+			$output = array();
+			$result = Question::searchQuestion($_GET['q']);
+			foreach ($result as $r):
+				$output[] = $r->q_body;
+			endforeach;
+			echo implode("\n", $output);
+	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
@@ -250,7 +287,7 @@ class QuestionController extends Controller
 	}
 
 	/**
-	 * Performs the AJAX validation.
+	 * Performs the AJAX valihttp://torrentz.eu/623b3288f853e5ad8a5a47bf18b0bc06d8af655ddation.
 	 * @param Question $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
