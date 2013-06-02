@@ -151,7 +151,7 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
 	<div class="clear"></div>
 
 	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by Quanz.<br/>
+		Copyright &copy; <?php echo date('Y'); ?> by Sudipta Sen.<br/>
 		All Rights Reserved.<br/>
 		<?php echo "Team Quanz"; ?>
 	</div><!-- footer -->
