@@ -13,7 +13,7 @@ Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 return array(
 	'theme' => 'theme',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Quan - The knowledge campus β--',
+	'name'=>'Quanz - The knowledge campus -α',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -59,7 +59,7 @@ return array(
 			'showScriptName'=>false,
      		'caseSensitive'=>false,
 			'rules'=>array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+        		'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
@@ -77,7 +77,7 @@ return array(
 			'password' => 'sanborn31011993@@',
 			'charset' => 'utf8',
 		),
-		
+	
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
