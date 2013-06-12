@@ -50,11 +50,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'l_name',
 		'username',
 		'password',
-		'batch',
-		/*
-		'stream',
-		'roll',
-		*/
+		
 		array(
 			'class'=>'CButtonColumn',
 		),

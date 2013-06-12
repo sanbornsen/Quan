@@ -31,21 +31,6 @@
 		<?php echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->label($model,'batch'); ?>
-		<?php echo $form->textField($model,'batch',array('size'=>20,'maxlength'=>20)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'stream'); ?>
-		<?php echo $form->textField($model,'stream',array('size'=>20,'maxlength'=>20)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'roll'); ?>
-		<?php echo $form->textField($model,'roll'); ?>
-	</div>
-
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>
