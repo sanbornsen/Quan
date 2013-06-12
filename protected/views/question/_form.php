@@ -15,19 +15,19 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
+	<div class="row_lpad">
 		<?php echo $form->labelEx($model,'q_body'); ?>
 		<?php echo $form->textArea($model,'q_body',array('id'=>'TestForm_textarea','class'=>'span9')); ?>
 		<?php echo $form->error($model,'q_body'); ?>
 	</div>
 
-	<div class="row">
+	<div class="row_lpad">
 		<?php echo $form->labelEx($model,'q_desc'); ?>
 		<?php echo $form->textArea($model,'q_desc',array('id'=>'editor2', 'rows'=>6, 'cols'=>100)); ?>
 		<?php echo $form->error($model,'q_desc'); ?>
 	</div>
 
-	<div class="row buttons">
+	<div class="row_lpad buttons">
 		<input type="checkbox" name="anonyn"> Ask as anonymus  
 		<hr>
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Ask' : 'Save',array('class'=>'btn btn-primary')); ?>

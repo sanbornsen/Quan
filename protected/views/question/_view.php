@@ -4,13 +4,14 @@
 ?>
 
 <div class="view question">
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('q_body')); ?>:
-	<?php echo CHtml::link(CHtml::encode($data->q_body), array('view', 'id'=>$data->q_id)); ?></b>
-	<br />
+	<div style="margin:5px; max-width:70px; float:left;padding-right:20px">
 	<?php $q_auth = explode(" ", $data->user_id)?>
 	<?php $userinfo = Users::model()->find('username LIKE "'.$q_auth[0].'"');?>
-	<?php echo "by ".ucwords($userinfo->f_name)." ".ucwords($userinfo->l_name); ?>
+	<img alt="userimage" src="<?= Yii::app()->baseUrl.'/images/users/thumbs/thumb_'.$userinfo->image ?>"></img>
+	</div>
+	<b><?php echo CHtml::link(CHtml::encode($data->q_body), array('view', 'id'=>$data->q_id)); ?></b>
+	<br />
+	<?php echo "by ".CHtml::link(CHtml::encode(ucwords($userinfo->f_name)." ".ucwords($userinfo->l_name)), array('users/view','id'=>$userinfo->user_id)); ?>
 	<?php if($q_auth[0] == "Anonymus") echo CHtml::encode($q_auth[0]); ?>
 	<br />
 	<?php $answer = Answers::model()->findAll(array("condition"=>"q_id = ".$data->q_id,"order"=>"a_id DESC"));
