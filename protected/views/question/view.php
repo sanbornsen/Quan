@@ -120,3 +120,4 @@ else
 <h4>Add a new answer</h4>
 <?php $a_model = new Answers;?>
 <?php echo $this->renderPartial('_aform', array('model'=>$a_model)); ?>
+

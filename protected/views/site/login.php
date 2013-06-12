@@ -25,14 +25,14 @@ $this->breadcrumbs=array(
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<div class="row_lpad">
-		<?php echo $form->labelEx($model,'username'); ?>
-		<?php echo $form->textField($model,'username',array('class'=>'inpfield',)); ?>
+		<?php //echo $form->labelEx($model,'username'); ?>
+		<?php echo $form->textField($model,'username',array('class'=>'inpfield','placeholder'=>'username')); ?>
 		<?php echo $form->error($model,'username',array('class'=>'inpfield_error')); ?>
 	</div>
 
 	<div class="row_lpad">
-		<?php echo $form->labelEx($model,'password'); ?>
-		<?php echo $form->passwordField($model,'password',array('class'=>'inpfield',)); ?>
+		<?php //echo $form->labelEx($model,'password'); ?>
+		<?php echo $form->passwordField($model,'password',array('class'=>'inpfield','placeholder'=>'password')); ?>
 		<?php echo $form->error($model,'password',array('class'=>'inpfield_error')); ?>
 		
 	</div>
