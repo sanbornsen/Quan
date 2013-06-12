@@ -1,21 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "company".
  *
- * The followings are the available columns in table 'users':
- * @property integer $user_id
- * @property string $f_name
- * @property string $l_name
- * @property string $username
- * @property string $password
+ * The followings are the available columns in table 'company':
+ * @property integer $com_id
+ * @property string $com_name
+ * @property string $com_add
+ * @property string $com_logo
+ * @property string $com_emp
+ * @property string $com_follower
+ * @property string $com_about
+ * @property string $com_creator
  */
-class Users extends CActiveRecord
+class Company extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return Company the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -27,7 +30,7 @@ class Users extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return 'company';
 	}
 
 	/**
@@ -38,16 +41,12 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('f_name, l_name, email_id, username, password', 'required'),
-			array('f_name, l_name, username', 'length', 'max'=>50),
-			array('password', 'length', 'max'=>50),
-			array('username', 'unique', 'attributeName'=> 'username', 'caseSensitive' => 'false'),
-			array('email_id', 'unique', 'attributeName'=> 'email_id', 'caseSensitive' => 'false'),
-			array('email_id','email'),
-			array('image', 'file', 'types'=>'jpg, gif, png','allowEmpty'=>true),
+			array('com_name, com_add, com_about', 'required'),
+			array('com_name', 'length', 'max'=>1000),
+			array('com_logo, com_creator', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('user_id, f_name, l_name, username, email_id','safe', 'on'=>'search'),
+			array('com_id, com_name, com_add, com_logo, com_emp, com_follower, com_about, com_creator', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,23 +60,21 @@ class Users extends CActiveRecord
 		return array(
 		);
 	}
-	
-	
-	
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
 	public function attributeLabels()
 	{
 		return array(
-			'user_id' => 'User',
-			'f_name' => 'First Name',
-			'l_name' => 'Last Name',
-			'email_id' => 'Email',
-			'username' => 'Username',
-			'password' => 'Password',
-			'image' => 'Choose Display Picture',
-			
+			'com_id' => 'Com',
+			'com_name' => 'Com Name',
+			'com_add' => 'Com Add',
+			'com_logo' => 'Com Logo',
+			'com_emp' => 'Com Emp',
+			'com_follower' => 'Com Follower',
+			'com_about' => 'Com About',
+			'com_creator' => 'Com Creator',
 		);
 	}
 
@@ -92,13 +89,14 @@ class Users extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('f_name',$this->f_name,true);
-		$criteria->compare('l_name',$this->l_name,true);
-		$criteria->compare('email_id',$this->email_id,true);
-		$criteria->compare('username',$this->username,true);
-		$criteria->compare('password',$this->password,true);
-		
+		$criteria->compare('com_id',$this->com_id);
+		$criteria->compare('com_name',$this->com_name,true);
+		$criteria->compare('com_add',$this->com_add,true);
+		$criteria->compare('com_logo',$this->com_logo,true);
+		$criteria->compare('com_emp',$this->com_emp,true);
+		$criteria->compare('com_follower',$this->com_follower,true);
+		$criteria->compare('com_about',$this->com_about,true);
+		$criteria->compare('com_creator',$this->com_creator,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
