@@ -7,7 +7,13 @@
 	<div style="margin:5px; max-width:70px; float:left;padding-right:20px">
 	<?php $q_auth = explode(" ", $data->user_id)?>
 	<?php $userinfo = Users::model()->find('username LIKE "'.$q_auth[0].'"');?>
-	<img alt="userimage" src="<?= Yii::app()->baseUrl.'/images/users/thumbs/thumb_'.$userinfo->image ?>"></img>
+		<div style="height:90px;width:50px">
+			<?php if($userinfo):?>
+				<img alt="<?=$q_auth[0]?>" src="<?= Yii::app()->baseUrl.'/images/users/thumbs/thumb_'.$userinfo->image ?>" height="80px" width="50px"></img>
+			<?php else:?>
+				<img alt="<?=$q_auth[0]?>" src="<?= Yii::app()->baseUrl.'/images/users/unknown.jpg' ?>" height="70px" width="50px"></img>
+			<?php endif;?>
+		</div>
 	</div>
 	<b><?php echo CHtml::link(CHtml::encode($data->q_body), array('view', 'id'=>$data->q_id)); ?></b>
 	<br />

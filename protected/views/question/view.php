@@ -58,6 +58,15 @@ if($ans->user_id != "admin"){
 else 
 	$usr = "admin";
 ?>
+<div style="margin:5px; max-width:70px; float:left;padding-right:20px">
+	<div style="height:90px;width:50px">
+		<?php if($username):?>
+			<img alt="<?=$ans_auth[0]?>" src="<?= Yii::app()->baseUrl.'/images/users/thumbs/thumb_'.$username->image ?>" height="80px" width="50px"></img>
+		<?php else:?>
+			<img alt="<?=$ans_auth[0]?>" src="<?= Yii::app()->baseUrl.'/images/users/unknown.jpg' ?>" height="70px" width="50px"></img>
+		<?php endif;?>
+	</div>
+</div>
 <div>
 	<h4><b><?= $usr ?> </b><?= CHtml::link(CHtml::encode("says : "), array('answers/view', 'id'=>$ans->a_id));?></b> </h4>
 	<font size="3"><?= $ans->a_body ?></font>
@@ -85,25 +94,13 @@ else
 			
 	<?php 
 	if(in_array($current_user_id, $voters)){
-	/*	echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$ans->a_id),
-  			array(
- 	  			'submit'=>array('answers/votedown', 'id'=>$ans->a_id),
-  				'class' => 'label label-important'
-       			)
-			);
-	*/
+
 	?>
 	<a class="label label-important"  id="voting<?= $ans->a_id ?>" onclick='voteUp(0,<?= $ans->a_id ?>,"<?= Yii::app()->baseUrl ?>")'> Down Vote </a>
 	<?php
 	}
 	else{ 
-/*		echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$ans->a_id),
-  			array(
- 			'submit'=>array('answers/voteup', 'id'=>$ans->a_id),
-  			'class' => 'label label-success'
-    		)
-		);
-*/
+
 	?>
     <a class="label label-success"  id="voting<?= $ans->a_id ?>" onclick='voteUp(1,<?= $ans->a_id ?>,"<?= Yii::app()->baseUrl ?>")'> Up Vote </a>
     
