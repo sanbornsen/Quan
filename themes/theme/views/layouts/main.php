@@ -75,7 +75,7 @@ function addeduField($id){ //Education form
 	 var parent = document.getElementById("education"+$id);
 	 var remove = document.getElementById("addmore_edu");
 	 parent.removeChild(remove);
-	 var $func = "setAutoComplete('autocomplete_college_"+($id+1)+"', 'ac_college_"+($id+1)+"', '/quan/institution/search?sugg=')";
+	 var $func = "setAutoComplete('autocomplete_college_"+($id+1)+"', 'ac_college_"+($id+1)+"', '/institution/search?sugg=')";
 	 var newContent = '<div id="education'+($id+1)+'"><label for="Users_education">Education-'+($id+1)+'</label><input class="span3" id="autocomplete_college_'+($id+1)+'" onclick="'+$func+'" type="text" name="Users[college][]" placeholder="Institution Name" autocomplete="off" maxlength="50" size="20"></input><div id = "ac_college_'+($id+1)+'" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div><input class="span3" type="text" name="Users[course][]" placeholder="Course Name" maxlength="50" size="20"></input><input class="span1" type="text" name="Users[course_from][]" placeholder="From" maxlength="5" size="7"></input><input class="span1" type="text" name="Users[course_to][]" placeholder="To" maxlength="5" size="7"></input> <br><span id="addmore_edu"><a href="javascript:addeduField('+($id+1)+')">add more</a></span></div>'
 	 $("#edu").append(newContent); 
 }
@@ -86,7 +86,7 @@ function addjobField($id){ //Job form
 	 var parent = document.getElementById("job"+$id);
 	 var remove = document.getElementById("addmore_job");
 	 parent.removeChild(remove);
-	 var $func = "setAutoComplete('autocomplete_company_"+($id+1)+"', 'ac_company_"+($id+1)+"', '/quan/company/search?sugg=')";
+	 var $func = "setAutoComplete('autocomplete_company_"+($id+1)+"', 'ac_company_"+($id+1)+"', '/company/search?sugg=')";
 	 var newContent = '<div id="job'+($id+1)+'"><label for="Users_job">Job-'+($id+1)+'</label><input class="span3" id="autocomplete_company_'+($id+1)+'" onclick="'+$func+'" type="text" name="Users[company][]" placeholder="Company" autocomplete="off" maxlength="50" size="20"></input><div id = "ac_company_'+($id+1)+'" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div><input class="span3" type="text" name="Users[post][]" placeholder="Current Post" maxlength="50" size="20"></input><input class="span1" type="text" name="Users[job_from][]" placeholder="From" maxlength="5" size="7"></input><input class="span1" type="text" name="Users[job_to][]" placeholder="To" maxlength="5" size="7"></input> <br><span id="addmore_job"><a href="javascript:addjobField('+($id+1)+')">add more</a></span></div>'
 	 $("#job").append(newContent); 
 }
@@ -127,10 +127,11 @@ $(document).ready(function(){
     });
 });
 </script>
+
 <body onLoad="waitPreloadPage();">
-<DIV id="prepage" style="position:absolute; font-family:arial; font-size:16; left:0px; top:0px; background-color:white; layer-background-color:white; height:100%; width:100%;"> 
+<div id="prepage" style="position:absolute; font-family:arial; font-size:16; left:0px; top:0px; background-color:white; layer-background-color:white; height:100%; width:100%;"> 
 <TABLE width=100%><TR><TD><B>Loading ... ... Please wait!</B></TD></TR></TABLE>
-</DIV>
+</div>
 
 
 <?php $this->widget('bootstrap.widgets.TbNavbar',array(
