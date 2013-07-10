@@ -4,6 +4,9 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
 	$last_not = Notification::model()->findAll("not_id > ".$user->last_not." AND person1 NOT LIKE '".$user->username."'");
 	$not_num = " (".count($last_not).")";
 }
+else{
+	$not_num = "";
+}
 ?>
 
 <?php /* @var $this Controller */ ?>
@@ -20,7 +23,7 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/dimensions.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/autocomplete.js"></script>
-	<?php if($last_not):?>
+	<?php if(isset($last_not)):?>
 		<title><?php echo $not_num.CHtml::encode($this->pageTitle); ?></title>
 	<?php else: ?>
 		<title><?php echo CHtml::encode($this->pageTitle); ?></title>
