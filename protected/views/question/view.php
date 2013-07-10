@@ -68,7 +68,11 @@ else
 	</div>
 </div>
 <div>
-	<h4><b><?= $usr ?> </b><?= CHtml::link(CHtml::encode("says : "), array('answers/view', 'id'=>$ans->a_id));?></b> </h4>
+	<?php if($username):?>
+	<h4><b><a href=<?= Yii::app()->baseUrl."/".$ans_auth[0]?>><?= $usr ?></a></b> <?= CHtml::link(CHtml::encode("says"), array('answers/view', 'id'=>$ans->a_id));?> : </h4>
+	<?php else:?>
+	<h4><b><?= $usr ?></b> <?= CHtml::link(CHtml::encode("says"), array('answers/view', 'id'=>$ans->a_id));?> : </h4>
+	<?php endif;?>
 	<font size="3"><?= $ans->a_body ?></font>
 	<p class="hint">
 	<?php $date = explode(" ", $ans->add_time)?>

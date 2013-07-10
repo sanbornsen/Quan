@@ -65,23 +65,13 @@ else
 			
 	<?php 
 		if(in_array($current_user_id, $voters)){
-				/*echo CHtml::link(CHtml::encode('Down Vote'), array('answers/votedown', 'id'=>$model->a_id),
-		  			array(
-		 	  			'submit'=>array('answers/votedown', 'id'=>$model->a_id),
-		  				'class' => 'label label-important'
-		       			)
-					);*/
+			
 	?>
 			<a class="label label-important"  id="voting<?= $model->a_id ?>" onclick='voteUp(0,<?= $model->a_id ?>,"<?= Yii::app()->baseUrl ?>")'> Down Vote </a>
 	<?php
 	}
 			else{ 
-			/*	echo CHtml::link(CHtml::encode('Up Vote'), array('answers/voteup', 'id'=>$model->a_id),
-		  			array(
-		 			'submit'=>array('answers/voteup', 'id'=>$model->a_id),
-		  			'class' => 'label label-success'
-		    		)
-				);*/
+			
 	?>
 			<a class="label label-success"  id="voting<?= $model->a_id ?>" onclick='voteUp(1,<?= $model->a_id ?>,"<?= Yii::app()->baseUrl ?>")'> Up Vote </a>
     <?php 

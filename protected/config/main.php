@@ -1,20 +1,17 @@
 <?php
-
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
-
 // This is the main Web application configuration. Any writable
-
 // CWebApplication properties can be configured here.
 
 Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
+Yii::setPathOfAlias('image', dirname(__FILE__).'/../extensions/image');
 
 
 return array(
 	'theme' => 'theme',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Quanz - The knowledge campus -α',
-
 	// preloading 'log' component
 	'preload'=>array('log'),
 
@@ -62,6 +59,7 @@ return array(
         		'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+        		'<id:\w+>'=>'/users/views',
 			),
 		),
 		
