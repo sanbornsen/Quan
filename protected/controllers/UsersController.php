@@ -103,8 +103,10 @@ class UsersController extends Controller
 		$this->performAjaxValidation($model);
 		if(isset($_POST['Users']))
 		{
+			if($_POST['Users']['password'] != '')
+				$_POST['Users']['password'] = md5($_POST['Users']['password']);
 			$model->attributes=$_POST['Users'];
-			$model->password = md5($_POST['Users']['password']);
+			//$model->password = md5($_POST['Users']['password']);
 				
 			if($model->save()){
 				$this->redirect(array('view','id'=>$model->user_id));
