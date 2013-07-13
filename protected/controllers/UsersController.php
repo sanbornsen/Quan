@@ -106,9 +106,9 @@ class UsersController extends Controller
 			if($_POST['Users']['password'] != '')
 				$_POST['Users']['password'] = md5($_POST['Users']['password']);
 			$model->attributes=$_POST['Users'];
-			//$model->password = md5($_POST['Users']['password']);
-				
+			
 			if($model->save()){
+				$_SESSION['msg']['signup'] = 'This looks great..!! Now you are ready to login.';
 				$this->redirect(array('view','id'=>$model->user_id));
 			}
 				

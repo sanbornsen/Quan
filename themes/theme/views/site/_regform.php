@@ -21,7 +21,9 @@
     'htmlOptions'=>array('class'=>''),
 )); ?>
 
-
+	<?php if(isset($_SESSION['msg']['signup'])):?>
+		<div class="alert alert-success"><?=$_SESSION['msg']['signup']?></div>
+	<?php unset($_SESSION['msg']['signup']); endif;?>
 	<?php echo $form->errorSummary($model); ?>
 
 	
