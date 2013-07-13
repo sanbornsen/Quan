@@ -17,8 +17,14 @@
 	</div>
 	<b><?php echo CHtml::link(CHtml::encode($data->q_body), array('view', 'id'=>$data->q_id)); ?></b>
 	<br />
-	<?php echo "by ".CHtml::link(CHtml::encode(ucwords($userinfo->f_name)." ".ucwords($userinfo->l_name)), array('users/view','id'=>$userinfo->user_id)); ?>
-	<?php if($q_auth[0] == "Anonymus") echo CHtml::encode($q_auth[0]); ?>
+	
+	<?php echo "by " ?>
+	<?php if($userinfo):
+		echo CHtml::link(ucwords($userinfo->f_name)." ".ucwords($userinfo->l_name), array('users/view','id'=>$userinfo->user_id)); 
+	 else:
+	 	echo CHtml::encode($q_auth[0]); 
+	 endif;
+	 ?>
 	<br />
 	<?php $answer = Answers::model()->findAll(array("condition"=>"q_id = ".$data->q_id,"order"=>"a_id DESC"));
 		  $answer_auth = array();
@@ -30,7 +36,6 @@
 		  		}
 		  		else 
 		  			$name = $ans_auth[0];
-		  		
 		  		if(!in_array($name, $answer_auth))
 			  		array_push($answer_auth, $name);
 		  endforeach;
