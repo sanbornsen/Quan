@@ -95,21 +95,28 @@ function addjobField($id){ //Job form
 }
 
 
-
-
-function waitPreloadPage() { //DOM
-if (document.getElementById){
-document.getElementById('prepage').style.visibility='hidden';
-}else{
-if (document.layers){ //NS4
-document.prepage.visibility = 'hidden';
+function verify()
+{
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("verification_reply").innerHTML=xmlhttp.responseText;
+    }
+  }
+var baseurl = '<?php echo Yii::app()->baseUrl; ?>';
+var code = document.getElementById("verify").value;
+xmlhttp.open("GET",baseurl+"/users/verify?code="+code,true);
+xmlhttp.send();
 }
-else { //IE4
-document.all.prepage.style.visibility = 'hidden';
-}
-}
-}
-
 </script>
 
 
@@ -130,12 +137,11 @@ $(document).ready(function(){
     });
 });
 </script>
-
-<body onLoad="waitPreloadPage();">
-<div id="prepage" style="position:absolute; font-family:arial; font-size:16; left:0px; top:0px; background-color:white; layer-background-color:white; height:100%; width:100%;"> 
-<TABLE width=100%><TR><TD><B>Loading ... ... Please wait!</B></TD></TR></TABLE>
-</div>
-
+<?php if(isset($_SESSION['verify'])):?>
+	<body onload="verify_modal()">
+<?php else:?>
+	<body>
+<?php endif;?>
 
 <?php $this->widget('bootstrap.widgets.TbNavbar',array(
     'items'=>array(
@@ -197,7 +203,30 @@ $(document).ready(function(){
 
 </div><!-- page -->
 
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Verify Your Email</h3>
+	</div>
+	<div class="modal-body">
+		<p>Please enter the verification code you have got through mail. If you haven't recieve any mail from us then click here to resend. Not verifying your email will lead to deletion of this profile within 24 hours.</p>
+		<input type='text' name='verify' id='verify' placeholder="Code here"/> </br> <button class="btn btn-primary" onClick="verify()">Verify</button> </br>	</div>
+	<div class="modal-footer">
+		<span style="float:left" id="verification_reply"></span>
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
+
 </body>
+
+<script>
+function verify_modal()
+{
+$('#myModal').modal('show');
+}
+</script>
+
 </html>
 
 

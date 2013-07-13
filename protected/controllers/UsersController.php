@@ -36,7 +36,7 @@ class UsersController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('views','view','update','updatepart'),
+				'actions'=>array('views','view','update','updatepart','verify',),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -105,11 +105,20 @@ class UsersController extends Controller
 		{
 			if($_POST['Users']['password'] != '')
 				$_POST['Users']['password'] = md5($_POST['Users']['password']);
+			$code = rand(3000,9999);
+			$model->verification = $code;
 			$model->attributes=$_POST['Users'];
-			
+						
 			if($model->save()){
-				$_SESSION['msg']['signup'] = 'This looks great..!! Now you are ready to login.';
-				$this->redirect(array('view','id'=>$model->user_id));
+				$to = $_POST['Users']['email_id'];
+				$from = 'service@quanz.in';
+				$subject = 'New Registration';
+				$message = 'Dear '.$_POST['Users']['f_name'].',';
+				$message .= 'Thank you for your registration. Your email verification code is '.$code;
+				$headers = 'From: '.$from;
+				mail($to, $subject, $message, $headers);
+				$_SESSION['msg']['signup'] = 'This looks great..!! <br> Now you are ready to login. Please check your email for the email verification code.';
+				$this->redirect(array('site/login'));
 			}
 				
 		}
@@ -331,6 +340,26 @@ class UsersController extends Controller
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
+		}
+	}
+	
+	public function actionVerify()
+	{
+		$model=Users::model()->findByUsername(Yii::app()->user->name);
+		if($_GET['code']==''){
+			echo "<div class='alert alert-error'>Please enter some code.</div>";
+		}
+		elseif(strlen($_GET['code'])!=4){
+			echo "<div class='alert alert-error'>Code must contain 4 digit.</div>";
+		}
+		elseif($model->verification == $_GET['code']){
+			$model->verification = 0;
+			$model->save(false);
+			unset($_SESSION['verify']);
+			echo "<div class='alert alert-success'>Thank you for verification.</div>";
+		}
+		else {
+			echo "<div class='alert alert-error'>Wrong verification code. Try again!</div>";
 		}
 	}
 }

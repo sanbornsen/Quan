@@ -37,7 +37,10 @@ class SiteController extends Controller
 					'actions'=>array('index'),
 					'users'=>array('admin'),
 				),
-				
+				array('denie',  // denie login from the authenticate user
+					'actions'=>array('login'),
+					'users'=>array('@'),
+				),
 			);
 		}
 
@@ -127,6 +130,7 @@ class SiteController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
+		if(isset($_SESSION['verify']))unset($_SESSION['verify']);
 		$this->redirect(Yii::app()->homeUrl);
 	}
 }

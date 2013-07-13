@@ -11,7 +11,7 @@ Yii::setPathOfAlias('image', dirname(__FILE__).'/../extensions/image');
 return array(
 	'theme' => 'theme',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Quanz - The knowledge campus -α',
+	'name'=>'Quanz - The knowledge campus β',
 	// preloading 'log' component
 	'preload'=>array('log'),
 

@@ -76,6 +76,7 @@ class Users extends CActiveRecord
 			'email_id' => 'Email',
 			'username' => 'Username',
 			'password' => 'Password',
+			'verification' => 'Verification',
 			'image' => 'Choose Display Picture',
 			
 		);
@@ -98,10 +99,15 @@ class Users extends CActiveRecord
 		$criteria->compare('email_id',$this->email_id,true);
 		$criteria->compare('username',$this->username,true);
 		$criteria->compare('password',$this->password,true);
-		
+		$criteria->compare('verification',$this->verification,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	
+	public function findByUsername($username){
+		return $this->find('username LIKE "'.$username.'"');
 	}
 }
