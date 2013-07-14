@@ -18,11 +18,16 @@ else{
 
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/autocomplete.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-fileupload.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-fileupload.min.css" />
     
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/dimensions.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/autocomplete.js"></script>
+	
 	<?php if(isset($last_not)):?>
 		<title><?php echo $not_num.CHtml::encode($this->pageTitle); ?></title>
 	<?php else: ?>
@@ -30,7 +35,9 @@ else{
 	<?php endif;?>
 
 	<?php Yii::app()->bootstrap->register(); ?>
-	
+	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap-fileupload.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap-fileupload.min.js"></script>
 
 </head>
 <script>
@@ -78,8 +85,21 @@ function addeduField($id){ //Education form
 	 var parent = document.getElementById("education"+$id);
 	 var remove = document.getElementById("addmore_edu");
 	 parent.removeChild(remove);
-	 var $func = "setAutoComplete('autocomplete_college_"+($id+1)+"', 'ac_college_"+($id+1)+"', '/institution/search?sugg=')";
-	 var newContent = '<div id="education'+($id+1)+'"><label for="Users_education">Education-'+($id+1)+'</label><input class="span3" id="autocomplete_college_'+($id+1)+'" onclick="'+$func+'" type="text" name="Users[college][]" placeholder="Institution Name" autocomplete="off" maxlength="50" size="20"></input><div id = "ac_college_'+($id+1)+'" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div><input class="span3" type="text" name="Users[course][]" placeholder="Course Name" maxlength="50" size="20"></input><input class="span1" type="text" name="Users[course_from][]" placeholder="From" maxlength="5" size="7"></input><input class="span1" type="text" name="Users[course_to][]" placeholder="To" maxlength="5" size="7"></input> <br><span id="addmore_edu"><a href="javascript:addeduField('+($id+1)+')">add more</a></span></div>'
+	 var $func = "setAutoComplete('autocomplete_college_"+($id+1)+"', 'ac_college_"+($id+1)+"', '<?=Yii::app()->baseUrl?>/institution/search?sugg=')";
+	 var funcf = "date('edpf_"+($id+1)+"')";
+	 var funct = "date('edpt_"+($id+1)+"')";
+	 var date = '<?=date('d-m-Y')?>';
+	 var newContent = '<div id="education'+($id+1)+'">';
+	 newContent += '<label for="Users_education">Education-'+($id+1)+'</label>';
+	 newContent +='<input class="span3" id="autocomplete_college_'+($id+1)+'" onclick="'+$func+'" type="text" name="Users[college][]" placeholder="Institution Name" autocomplete="off" maxlength="200" size="20"></input>';
+	 newContent +='<div id = "ac_college_'+($id+1)+'" class="span3 ac_college" style="position: absolute; margin-left:-5px; margin-top: 10px; display:none"></div><input style="margin-left:5px" class="span3" type="text" name="Users[course][]" placeholder="Course Name" maxlength="150" size="20"></input>';
+	 newContent +='<div style="padding-left:6px" data-date-format="dd-mm-yyyy" data-date="'+date+'" id="edpf_'+($id+1)+'" class="input-append date">';
+	 newContent +='<input type="text" name="Users[course_from][]" readonly="" value="" placeholder="From Date" size="16" class="span2">';
+	 newContent +='<span class="add-on" onclick="'+funcf+'"><i class="icon-calendar"></i></span></div>';
+     newContent +='<div style="padding-left:6px" data-date-format="dd-mm-yyyy" data-date="'+date+'" id="edpt_'+($id+1)+'" class="input-append date">';
+	 newContent +='<input type="text" name="Users[course_to][]" readonly="" value="" placeholder="To Date" size="16" class="span2">';
+	 newContent +='<span class="add-on" onclick="'+funct+'"><i class="icon-calendar"></i></span>';
+	 newContent +='</div><span id="addmore_edu"><a href="javascript:addeduField('+($id+1)+')">add more</a></span></div>';
 	 $("#edu").append(newContent); 
 }
 
@@ -88,9 +108,21 @@ function addeduField($id){ //Education form
 function addjobField($id){ //Job form
 	 var parent = document.getElementById("job"+$id);
 	 var remove = document.getElementById("addmore_job");
+	 var funcf = "date('jdpf_"+($id+1)+"')";
+	 var funct = "date('jdpt_"+($id+1)+"')";
+	 var date = '<?=date('d-m-Y')?>';
 	 parent.removeChild(remove);
-	 var $func = "setAutoComplete('autocomplete_company_"+($id+1)+"', 'ac_company_"+($id+1)+"', '/company/search?sugg=')";
-	 var newContent = '<div id="job'+($id+1)+'"><label for="Users_job">Job-'+($id+1)+'</label><input class="span3" id="autocomplete_company_'+($id+1)+'" onclick="'+$func+'" type="text" name="Users[company][]" placeholder="Company" autocomplete="off" maxlength="50" size="20"></input><div id = "ac_company_'+($id+1)+'" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div><input class="span3" type="text" name="Users[post][]" placeholder="Current Post" maxlength="50" size="20"></input><input class="span1" type="text" name="Users[job_from][]" placeholder="From" maxlength="5" size="7"></input><input class="span1" type="text" name="Users[job_to][]" placeholder="To" maxlength="5" size="7"></input> <br><span id="addmore_job"><a href="javascript:addjobField('+($id+1)+')">add more</a></span></div>'
+	 var $func = "setAutoComplete('autocomplete_company_"+($id+1)+"', 'ac_company_"+($id+1)+"', '<?=Yii::app()->baseUrl?>/company/search?sugg=')";
+	 var newContent = '<div id="job'+($id+1)+'"><label for="Users_job">Job-'+($id+1)+'</label><input class="span3" id="autocomplete_company_'+($id+1)+'" onclick="'+$func+'" type="text" name="Users[company][]" placeholder="Company" autocomplete="off" maxlength="50" size="20"></input><div id = "ac_company_'+($id+1)+'" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div><input style="margin-left:5px" class="span3" type="text" name="Users[post][]" placeholder="Current Post" maxlength="50" size="20"></input>';
+	 //newComment += '<input class="span1" type="text" name="Users[job_from][]" placeholder="From" maxlength="5" size="7"></input><input class="span1" type="text" name="Users[job_to][]" placeholder="To" maxlength="5" size="7"></input> <br>';
+	 
+	 newContent +='<div style="padding-left:6px" data-date-format="dd-mm-yyyy" data-date="'+date+'" id="jdpf_'+($id+1)+'" class="input-append date">';
+	 newContent +='<input type="text" name="Users[job_from][]" readonly="" value="" placeholder="From Date" size="16" class="span2">';
+	 newContent +='<span class="add-on" onclick="'+funcf+'"><i class="icon-calendar"></i></span></div>';
+     newContent +='<div style="padding-left:6px" data-date-format="dd-mm-yyyy" data-date="'+date+'" id="jdpt_'+($id+1)+'" class="input-append date">';
+	 newContent +='<input type="text" name="Users[job_to][]" readonly="" value="" placeholder="To Date" size="16" class="span2">';
+	 newContent +='<span class="add-on" onclick="'+funct+'"><i class="icon-calendar"></i></span>';
+	 newContent +='</div><span id="addmore_job"><a href="javascript:addjobField('+($id+1)+')">add more</a></span></div>';
 	 $("#job").append(newContent); 
 }
 
@@ -117,8 +149,20 @@ var code = document.getElementById("verify").value;
 xmlhttp.open("GET",baseurl+"/users/verify?code="+code,true);
 xmlhttp.send();
 }
+
 </script>
 
+<script>
+	function date(id){
+    $('#'+id+'').datepicker('show');
+	}
+	
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.fileupload').fileupload();
+});
+</script>
 
 <script type="text/javascript">
 $(document).ready(function(){
