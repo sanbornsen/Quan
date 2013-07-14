@@ -249,6 +249,19 @@ class UsersController extends Controller
 			
 			$model->attributes=$_POST['Users'];
 			
+			//die(var_dump($_FILES));
+			
+			if($_FILES['image']['name']!='' && $_FILES['image']['size']<1500000 && !$_FILES['image']['error']){
+				$ext = explode('.',$_FILES['image']['name']);
+				$ext = end($ext);
+				move_uploaded_file($_FILES["image"]["tmp_name"],"../".Yii::app()->baseUrl."/images/users/".$model->username.".".$ext);
+				copy("../".Yii::app()->baseUrl."/images/users/".$model->username.".".$ext,"../".Yii::app()->baseUrl."/images/users/thumbs/thumb_".$model->username.".".$ext);
+				self::resize_image("../".Yii::app()->baseUrl."/images/users/".$model->username.".".$ext, 300, 300);
+				self::resize_image("../".Yii::app()->baseUrl."/images/users/thumbs/thumb_".$model->username.".".$ext, 100, 100);
+				$model->image = $model->username.".".$ext;
+			}
+			
+			/*
 			if($model->image == "unknown.jpg"){
 				$uploadedimage=EUploadedImage::getInstance($model,'image');
 				$uploadedimage->maxWidth = 300;
@@ -264,7 +277,7 @@ class UsersController extends Controller
     				    'prefix' => 'thumb_',
 				);
 				$uploadedimage->saveAs($url);
-			}			
+			}*/			
 			if($model->save(false)){
 				$this->redirect(array('view','id'=>$model->user_id));
 			}
@@ -361,5 +374,32 @@ class UsersController extends Controller
 		else {
 			echo "<div class='alert alert-error'>Wrong verification code. Try again!</div>";
 		}
+	}
+	
+	function resize_image($file, $w, $h, $crop=FALSE) {
+    list($width, $height) = getimagesize($file);
+    $r = $width / $height;
+    if ($crop) {
+        if ($width > $height) {
+            $width = ceil($width-($width*($r-$w/$h)));
+        } else {
+            $height = ceil($height-($height*($r-$w/$h)));
+        }
+        $newwidth = $w;
+        $newheight = $h;
+    } else {
+        if ($w/$h > $r) {
+            $newwidth = $h*$r;
+            $newheight = $h;
+        } else {
+            $newheight = $w/$r;
+            $newwidth = $w;
+        }
+    }
+    $src = imagecreatefromjpeg($file);
+    $dst = imagecreatetruecolor($newwidth, $newheight);
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+    return $dst;
 	}
 }
