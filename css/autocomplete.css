@@ -1,0 +1,12 @@
+.ac_college{
+	background-color: #999;
+	padding:10px;
+}
+.ac_college .selected{
+	padding:10px;
+	background-color: white;
+}
+
+.ac_college .unselected{
+	padding:10px;
+}
