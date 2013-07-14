@@ -12,16 +12,15 @@
 	'action'=>Yii::app()->baseUrl."/users/updatepart/".$model->user_id,
 	'htmlOptions' => array('enctype' => 'multipart/form-data'),
 	)); ?>
-<?php if($model->image == "unknown.jpg"):?>
-<?php echo $form->errorSummary($model); ?>
-	<div class="well">
-		<?php 
-		echo $form->labelEx($model, 'image');
-		echo $form->fileField($model, 'image',array('class'=>'span3','style'=>'height:26px'));
-		echo $form->error($model, 'image');
-	?>
+
+<div class="fileupload fileupload-new" data-provides="fileupload">
+	<div class="fileupload-new thumbnail" style="width: 200px; height: 150px;"><img src="<?=Yii::app()->baseUrl?>/images/users/<?=$model->image?>" /></div>
+	<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+	<div>
+	<span class="btn btn-file"><span class="fileupload-new">Change image</span><span class="fileupload-exists">Change</span><input type="file" name="image" /></span>
+	<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
 	</div>
-<?php endif;?>
+</div>
 
 
 <h3> Education:</h3>
@@ -36,11 +35,20 @@
 		<label for="Users_education">
 	      Education-<?= $i+1 ?>
 	    </label>
-	    <input class="span3" id="autocomplete_college_<?= $i+1 ?>" onclick="setAutoComplete('autocomplete_college_<?= $i+1 ?>', 'ac_college_<?= $i+1 ?>', '/quan/institution/search?sugg=')" type="text" name="Users[college][]" value="<?= $education[0] ?>" placeholder="Institution Name" autocomplete="off" maxlength="50" size="20"></input>
+	    <input class="span3" id="autocomplete_college_<?= $i+1 ?>" onclick="setAutoComplete('autocomplete_college_<?= $i+1 ?>', 'ac_college_<?= $i+1 ?>', '<?=Yii::app()->baseUrl?>//institution/search?sugg=')" type="text" name="Users[college][]" value="<?= $education[0] ?>" placeholder="Institution Name" autocomplete="off" maxlength="50" size="20"></input>
 		<div id = "ac_college_<?= $i+1 ?>" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div>
 		<input class="span3" type="text" name="Users[course][]" value="<?= $education[1] ?>" placeholder="Course Name" maxlength="50" size="20"></input>
-		<input class="span1" type="text" name="Users[course_from][]" value="<?= $education[2] ?>" placeholder="From" maxlength="5" size="7"></input>
-		<input class="span1" type="text" name="Users[course_to][]" value="<?= $education[3] ?>" placeholder="To" maxlength="5" size="7"></input> <br>
+		
+		<div data-date-format="dd-mm-yyyy" data-date="<?=date('d-m-Y')?>" id="edpf_<?=$i+1?>" class="input-append date">
+		 <input type="text" name="Users[course_from][]" readonly="" value="<?= $education[2] ?>" size="16" class="span2">
+		 <span class="add-on" onclick="date('edpf_<?=$i+1?>')"><i class="icon-calendar"></i></span>
+		</div>
+         
+		<div data-date-format="dd-mm-yyyy" data-date="<?=date('d-m-Y')?>" id="edpt_<?=$i+1?>" class="input-append date">
+		 <input type="text" name="Users[course_to][]" readonly="" value="<?= $education[3] ?>" size="16" class="span2">
+		 <span class="add-on" onclick="date('edpt_<?=$i+1?>')"><i class="icon-calendar"></i></span>
+		</div>
+	
 	</div>
 	<?php endfor;?>
 	<?php endif;?>
@@ -48,11 +56,20 @@
 		<label for="Users_education">
 	      Education-<?= $i+1 ?>
 	    </label>
-	    <input class="span3" type="text" id="autocomplete_college_<?= $i+1 ?>" onclick="setAutoComplete('autocomplete_college_<?= $i+1 ?>', 'ac_college_<?= $i+1 ?>', '/quan/institution/search?sugg=')" name="Users[college][]" placeholder="Institution Name" autocomplete="off" maxlength="50" size="20"></input>
+	    <input class="span3" type="text" id="autocomplete_college_<?= $i+1 ?>" onclick="setAutoComplete('autocomplete_college_<?= $i+1 ?>', 'ac_college_<?= $i+1 ?>', '<?=Yii::app()->baseUrl?>/institution/search?sugg=')" name="Users[college][]" placeholder="Institution Name" autocomplete="off" maxlength="200" size="20"></input>
 		<div id = "ac_college_<?= $i+1 ?>" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div>
-		<input class="span3" type="text" name="Users[course][]" placeholder="Course Name" maxlength="50" size="20"></input>
-		<input class="span1" type="text" name="Users[course_from][]" placeholder="From" maxlength="5" size="7"></input>
-		<input class="span1" type="text" name="Users[course_to][]" placeholder="To" maxlength="5" size="7"></input> <br>
+		<input class="span3" type="text" name="Users[course][]" placeholder="Course Name" maxlength="150" size="20"></input>
+		
+	    <div data-date-format="dd-mm-yyyy" data-date="<?=date('d-m-Y')?>" id="edpf_<?=$i+1?>" class="input-append date">
+		 <input type="text" name="Users[course_from][]" placeholder="From Date" readonly="" value="" size="16" class="span2">
+		 <span class="add-on" onclick="date('edpf_<?=$i+1?>')"><i class="icon-calendar"></i></span>
+		</div>
+         
+		<div data-date-format="dd-mm-yyyy" data-date="<?=date('d-m-Y')?>" id="edpt_<?=$i+1?>" class="input-append date">
+		 <input type="text" name="Users[course_to][]" readonly="" placeholder="To Date" value="" size="16" class="span2">
+		 <span class="add-on" onclick="date('edpt_<?=$i+1?>')"><i class="icon-calendar"></i></span>
+		</div>
+          
 		<span id="addmore_edu"><a href='javascript:addeduField(<?= $i+1 ?>)'>add more</a></span>
 	</div>
 </div>
@@ -70,11 +87,19 @@
 		<label for="Users_job">
 	      Education-<?= $j+1 ?>
 	    </label>
-	    <input class="span3" id="autocomplete_company_<?= $j+1 ?>" onclick="setAutoComplete('autocomplete_company_<?= $j+1 ?>', 'ac_company_<?= $j+1 ?>', '/quan/company/search?sugg=')" type="text" name="Users[company][]" value="<?= $job[0] ?>" placeholder="Company" autocomplete="off" maxlength="50" size="20"></input>
+	    <input class="span3" id="autocomplete_company_<?= $j+1 ?>" onclick="setAutoComplete('autocomplete_company_<?= $j+1 ?>', 'ac_company_<?= $j+1 ?>', '<?=Yii::app()->baseUrl?>/company/search?sugg=')" type="text" name="Users[company][]" value="<?= $job[0] ?>" placeholder="Company" autocomplete="off" maxlength="50" size="20"></input>
 		<div id = "ac_company_<?= $j+1 ?>" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div>
 		<input class="span3" type="text" name="Users[post][]" value="<?= $job[1] ?>" placeholder="Current Post" maxlength="50" size="20"></input>
-		<input class="span1" type="text" name="Users[job_from][]" value="<?= $job[2] ?>" placeholder="From" maxlength="5" size="7"></input>
-		<input class="span1" type="text" name="Users[job_to][]" value="<?= $job[3] ?>" placeholder="To" maxlength="5" size="7"></input> <br>
+		
+		<div data-date-format="dd-mm-yyyy" data-date="<?=date('d-m-Y')?>" id="jdpf_<?=$j+1?>" class="input-append date">
+		 <input type="text" name="Users[job_from][]" placeholder="From Date" readonly="" value="<?= $job[2] ?>" size="16" class="span2">
+		 <span class="add-on" onclick="date('jdpf_<?=$j+1?>')"><i class="icon-calendar"></i></span>
+		</div>
+         
+		<div data-date-format="dd-mm-yyyy" data-date="<?=date('d-m-Y')?>" id="jdpt_<?=$j+1?>" class="input-append date">
+		 <input type="text" name="Users[job_to][]" readonly="" placeholder="To Date" value="<?= $job[3] ?>" size="16" class="span2">
+		 <span class="add-on" onclick="date('jdpt_<?=$j+1?>')"><i class="icon-calendar"></i></span>
+		</div>
 	</div>
 	<?php endfor;?>
 	<?php endif;?>
@@ -82,11 +107,19 @@
 		<label for="Users_job">
 	      Job-<?= $j+1 ?>
 	    </label>
-	    <input class="span3" id="autocomplete_company_<?= $j+1 ?>" onclick="setAutoComplete('autocomplete_company_<?= $j+1 ?>', 'ac_company_<?= $j+1 ?>', '/quan/company/search?sugg=')" type="text" name="Users[company][]" placeholder="Company" autocomplete="off" maxlength="50" size="20"></input>
+	    <input class="span3" id="autocomplete_company_<?= $j+1 ?>" onclick="setAutoComplete('autocomplete_company_<?= $j+1 ?>', 'ac_company_<?= $j+1 ?>', '<?=Yii::app()->baseUrl?>/company/search?sugg=')" type="text" name="Users[company][]" placeholder="Company" autocomplete="off" maxlength="50" size="20"></input>
 		<div id = "ac_company_<?= $j+1 ?>" class="span3 ac_college" style="position: absolute; margin-left: 0px; margin-top: 10px; display:none"></div>
 		<input class="span3" type="text" name="Users[post][]" placeholder="Current Post" maxlength="50" size="20"></input>
-		<input class="span1" type="text" name="Users[job_from][]" placeholder="From" maxlength="5" size="7"></input>
-		<input class="span1" type="text" name="Users[job_to][]" placeholder="To" maxlength="5" size="7"></input> <br>
+		
+		<div data-date-format="dd-mm-yyyy" data-date="<?=date('d-m-Y')?>" id="jdpf_<?=$j+1?>" class="input-append date">
+		 <input type="text" name="Users[job_from][]" placeholder="From Date" readonly="" value="" size="16" class="span2">
+		 <span class="add-on" onclick="date('jdpf_<?=$j+1?>')"><i class="icon-calendar"></i></span>
+		</div>
+         
+		<div data-date-format="dd-mm-yyyy" data-date="<?=date('d-m-Y')?>" id="jdpt_<?=$j+1?>" class="input-append date">
+		 <input type="text" name="Users[job_to][]" readonly="" placeholder="To Date" value="" size="16" class="span2">
+		 <span class="add-on" onclick="date('jdpt_<?=$j+1?>')"><i class="icon-calendar"></i></span>
+		</div>
 		<span id="addmore_job"><a href='javascript:addjobField(<?= $j+1 ?>)'>add more</a></span> 
 	</div>
 </div>
