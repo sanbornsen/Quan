@@ -21,6 +21,8 @@ else{
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/datepicker.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-fileupload.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-fileupload.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/bootstrap-select.css" />
     
     
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -38,6 +40,9 @@ else{
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap-fileupload.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap-fileupload.min.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap-select.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/bootstrap-select.min.js"></script>
+
 
 </head>
 <script>
@@ -163,6 +168,12 @@ $(document).ready(function(){
 	$('.fileupload').fileupload();
 });
 </script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.selectpicker').selectpicker();
+});
+</script>
+
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -208,7 +219,7 @@ $(document).ready(function(){
 	<?php if(!Yii::app()->user->isGuest):?>
            <center>
                 <form action="<?= $this->createAbsoluteUrl('question/search') ?>" method="GET" id="search-form" autocomplete="off">
-				<select class="styled-select" id="TestForm_dropdown" name="choice">
+				<select class="selectpicker" data-width="100px" id="TestForm_dropdown" name="choice">
 					<option value="Question">Question</option>
 					<option value="People">People</option>
 				</select>
