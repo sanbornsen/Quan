@@ -20,7 +20,7 @@
 	
 	<?php echo "by " ?>
 	<?php if($userinfo):
-		echo CHtml::link(ucwords($userinfo->f_name)." ".ucwords($userinfo->l_name), array('users/view','id'=>$userinfo->user_id)); 
+		echo CHtml::link(ucwords($userinfo->f_name)." ".ucwords($userinfo->l_name), array(Yii::app()->baseUrl.'/../'.$userinfo->username)); 
 	 else:
 	 	echo CHtml::encode($q_auth[0]); 
 	 endif;

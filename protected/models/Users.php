@@ -110,4 +110,5 @@ class Users extends CActiveRecord
 	public function findByUsername($username){
 		return $this->find('username LIKE "'.$username.'"');
 	}
+
 }

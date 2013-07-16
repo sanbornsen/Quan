@@ -36,7 +36,7 @@ class UsersController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('views','view','update','updatepart','verify',),
+				'actions'=>array('views','view','update','verify',),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -132,7 +132,7 @@ class UsersController extends Controller
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
-	 */
+	 *
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
@@ -153,40 +153,41 @@ class UsersController extends Controller
 			'model'=>$model,
 		));
 	}
-	
+	*/
 	
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdatepart($id)
+	public function actionUpdate()
 	{
-		Yii::import("image.EUploadedImage", true);	
+		
+		if(!Yii::app()->user->isGuest){
+		$id = Users::model()->findByUsername(Yii::app()->user->name);
+		$id = $id->user_id;
 		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
+       // Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);
 		if(isset($_POST['Users']))
 		{
-			
-			if(isset($_POST['Users']['college'])){       //save education details
+			if(isset($_POST['Users']['college'])){
+				   //save education details
 				$college_size = sizeof($_POST['Users']['college']);
 				$college_name = $_POST['Users']['college'];
 				$course_name = $_POST['Users']['course'];
 				$course_from = $_POST['Users']['course_from'];
 				$course_to = $_POST['Users']['course_to'];
 				$edu = array();
-				
 				for($i=0;$i<$college_size;$i++){
 					if($college_name[$i] != ""){
 						$edu["education".($i+1)] = $college_name[$i]."|".$course_name[$i]."|".$course_from[$i]."|".$course_to[$i];
 						$find_college = Institution::model()->find("inst_name LIKE '".trim($college_name[$i])."'");
 						if($find_college){
 							$student = explode(",",$find_college->inst_student);
+							//die(var_dump($student));
 							if(!in_array($id, $student))
 								array_push($student, $id);
-							//print_r($student);
 							$find_college->inst_student = implode(",",$student);
 							$student = explode(",",$find_college->inst_follower);
 							if(!in_array($id, $student))
@@ -208,7 +209,6 @@ class UsersController extends Controller
 				
 				$model->education = json_encode($edu);
 			}
-			
 			if(isset($_POST['Users']['company'])){			//save job details
 				$job_size = sizeof($_POST['Users']['company']);
 				$company_name = $_POST['Users']['company'];
@@ -261,31 +261,18 @@ class UsersController extends Controller
 				$model->image = $model->username.".".$ext;
 			}
 			
-			/*
-			if($model->image == "unknown.jpg"){
-				$uploadedimage=EUploadedImage::getInstance($model,'image');
-				$uploadedimage->maxWidth = 300;
-				$uploadedimage->maxHeight = 300;
-				$ext = end(explode(".",$uploadedimage));
-				$filename = $model->username.".".$ext;
-				$model->image = $filename;
-				$url = "../".Yii::app()->baseUrl."/images/users/".$filename;
-				$uploadedimage->thumb = array(
-				    'maxWidth' => 100,
-				    'maxHeight' => 100,
-				    'dir' => 'thumbs',
-    				    'prefix' => 'thumb_',
-				);
-				$uploadedimage->saveAs($url);
-			}*/			
 			if($model->save(false)){
-				$this->redirect(array('view','id'=>$model->user_id));
+				$this->redirect(array(Yii::app()->baseUrl.'/../'.$model->username));
 			}
+			
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
 		));
+		}
+	else
+		echo "This is not your profile to edit.";
 	}
 
 	/**

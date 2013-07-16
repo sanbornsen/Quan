@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Users'=>array('index'),
-	$model->user_id=>array('view','id'=>$model->user_id),
+	$model->f_name." ".$model->l_name => array(Yii::app()->baseUrl.'/../'.$model->username),
 	'Update',
 );
 /*
@@ -17,6 +17,6 @@ $this->menu=array(
 ?>
 
 
-<h3>Update Users <?php echo ucwords($model->f_name)." ".ucwords($model->l_name); ?></h3>
+<h4>Update User <?php echo ucwords($model->f_name)." ".ucwords($model->l_name); ?></h4>
 
 <?php echo $this->renderPartial('_updateform', array('model'=>$model)); ?>

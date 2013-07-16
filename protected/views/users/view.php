@@ -10,6 +10,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'List Questions', 'url'=>array('question/index')),
 	array('label'=>'Ask Question', 'url'=>array('question/create')),
+	array('label'=>'Edit Profile', 'url'=>array('users/update')),
 );
 ?>
 <h3 style="padding-left:10px"><?php echo ucwords($model->f_name)." ".ucwords($model->l_name); ?></h3>

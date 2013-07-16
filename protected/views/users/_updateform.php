@@ -9,7 +9,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id'=>'users-form',
     'enableAjaxValidation'=>false,
-	'action'=>Yii::app()->baseUrl."/users/updatepart/".$model->user_id,
+	'action'=>Yii::app()->baseUrl."/users/update",
 	'htmlOptions' => array('enctype' => 'multipart/form-data'),
 	)); ?>
 
