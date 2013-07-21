@@ -78,7 +78,7 @@ foreach ($dataProvider->getData() as $data):
 			echo $person1_name." has voted up an ".CHtml::link(CHtml::encode("Answer"), array('answers/view', 'id'=>$data->a_id))." posted by you.";
 		}
 	if($data->activity == "question"){ // Who ever asked a new question
-		$output = $person1_name." has asked a new ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id)).".";
+		$output = $person1_name." has asked a new ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id)).".</br>";
 		$output .= CHtml::link(CHtml::encode(Question::model()->getBodyById($data->q_id)), array('question/view', 'id'=>$data->q_id));
 		echo $output;
 	}
