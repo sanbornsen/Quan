@@ -36,7 +36,7 @@ class QuestionController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','sync'),
 				'users'=>array('admin'),
 			),
 			array('allow',
@@ -45,7 +45,7 @@ class QuestionController extends Controller
 			),
 		);
 	}
-
+	
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -65,12 +65,12 @@ class QuestionController extends Controller
 			$model_not->q_id =$id;
 			$a_model->add_time = date("Y-m-d H:i:s");
 			if(!$_POST['anonyn']){
-				$a_model->user_id = Yii::app()->user->getId();
-				$model_not->person1 = Yii::app()->user->getId();
+				$a_model->user_id = Users::model()->findIdByUsername(Yii::app()->user->getId());
+				$model_not->person1 = Users::model()->findIdByUsername(Yii::app()->user->getId());
 			}
 			else {
-				$a_model->user_id = "Anonymous ".Yii::app()->user->getId();
-				$model_not->person1 = "Anonymous User";
+				$a_model->user_id = "Anonymous ".Users::model()->findIdByUsername(Yii::app()->user->getId());
+				$model_not->person1 = "Anonymous ".Users::model()->findIdByUsername(Yii::app()->user->getId());
 			}
 			$model = $this->loadModel($id);
 			$model_not->person2 = $model->user_id;
@@ -112,15 +112,16 @@ class QuestionController extends Controller
 		if(isset($_POST['Question']))
 		{
 			$model_not = new Notification;
-
+			$curr_user = Yii::app()->user->getId();
 			$model->attributes=$_POST['Question'];
 			$model->add_time = date("Y-m-d H:i:s");
+			$model->last_update = date("Y-m-d H:i:s");
 			if(!$_POST['anonyn']){
-				$model->user_id = Yii::app()->user->getId();
-				$model_not->person1 = Yii::app()->user->getId();
+				$model->user_id = Users::model()->findIdByUsername($curr_user);
+				$model_not->person1 = Users::model()->findIdByUsername($curr_user);
 			}
 			else{ 
-				$model->user_id = "Anonymous ".Yii::app()->user->getId();
+				$model->user_id = "Anonymous ".Users::model()->findIdByUsername($curr_user);
 				$model_not->person1 = "Anonymous User";
 			}
 			
@@ -150,22 +151,27 @@ class QuestionController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Question']))
-		{
-			if($_POST['anonyn'])
-				$model->user_id = "Anonymous ".Yii::app()->user->getId();
-			else 
-				$model->user_id = Yii::app()->user->getId();
-			$model->attributes=$_POST['Question'];
-			$model->last_update = date("Y-m-d H:i:s");
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->q_id));
-		}
-
+		$curr_user = Yii::app()->user->getId();
+		$author = explode(" ",$model->user_id);
+		if(Users::model()->findIdByUsername($curr_user) == end($author)){
+			if(isset($_POST['Question']))
+			{
+				if($_POST['anonyn'])
+					$model->user_id = "Anonymous ".Users::model()->findIdByUsername($curr_user);
+				else 
+					$model->user_id = Users::model()->findIdByUsername($curr_user);
+				$model->attributes=$_POST['Question'];
+				$model->last_update = date("Y-m-d H:i:s");
+				if($model->save())
+					$this->redirect(array('view','id'=>$model->q_id));
+			}
 		$this->render('update',array(
 			'model'=>$model,
 		));
+		}
+		else {
+			echo "You are not authorized to update this question.";
+		}
 	}
 
 	/**
@@ -206,8 +212,10 @@ class QuestionController extends Controller
 	public function actionNotification()
 	{
 		$cur_usr = Yii::app()->user->getId();
-		$dataProvider=new CActiveDataProvider('Notification',array('criteria'=>array('order'=>'not_id DESC','condition'=>'person1 NOT LIKE "'.$cur_usr.'"'),
-																	'pagination'=>array('pageSize'=>100,),  
+		$dataProvider=new CActiveDataProvider('Notification',array('criteria'=>array('order'=>'not_id DESC',
+		                                                           'condition'=>'person1 !='.Users::model()->findIdByUsername($cur_usr),
+																  ),
+											  'pagination'=>array('pageSize'=>100,),  
 											 ));
 		$user = Users::model()->find("username LIKE '".$cur_usr."'");
 		$last_not = $user->last_not;
@@ -219,6 +227,7 @@ class QuestionController extends Controller
 			'last_not' => $last_not,
 		));
 	}
+	
 	
 	/**
 	 * Manages all models.
@@ -242,10 +251,11 @@ class QuestionController extends Controller
 	{
 		if($_GET['choice']=="People"){
 			$result = Users::searchUser($_GET['search']);
+			die(var_dump($result));
 		}
 		else{
 			$result = Question::searchQuestion($_GET['search']);
-			if(sizeof($result)>1){
+			if(sizeof($result)!=1){
 				$dataProvider=new CArrayDataProvider($result,array('keyField' => 'q_id',));
 				$this->render('index',array(
 					'dataProvider'=>$dataProvider,
@@ -254,7 +264,7 @@ class QuestionController extends Controller
 			else
 			{
 				$id = $result[0]->q_id;
-				self::actionView($id);
+				$this->redirect('view/'.$id);
 			} 
 		}
 	}
@@ -271,7 +281,8 @@ class QuestionController extends Controller
 			endforeach;
 			echo implode("\n", $output);
 	}
-
+	
+	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

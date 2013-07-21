@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 	$model->q_id,
 );
 $q_auth = explode(" ",$model->user_id);
-if(end($q_auth) == Yii::app()->user->getId()){
+if(end($q_auth) == Users::model()->findIdByUsername(Yii::app()->user->getId())){
 	$this->menu=array(
 		array('label'=>'List Question', 'url'=>array('index')),
 		array('label'=>'Create Question', 'url'=>array('create')),
@@ -33,13 +33,12 @@ else {
 ?>
 
 <h2><?php echo $model->q_body; ?></h2>
-<?php if($model->q_desc != ''):?>
-		<h4>
-			<b>Description:</b><?= $model->q_desc ?>
-		</h4>
-<?php endif;?>
 <?php $date = explode(" ", $model->add_time)?>
-<p class="hint">Date : <?= $date[0] ?> | Time : <?= $date[1] ?></p>
+<p class="hint">by <?= Users::model()->findNameByUserid($model->user_id) ?>  Date : <?= $date[0] ?> | Time : <?= $date[1] ?></p>
+<?php if($model->q_desc != ''):?>
+			<b>Description:</b>
+			<br><?= $model->q_desc ?>
+<?php endif;?>
 <hr>
 
 <h3><b>Answers :</b></h3>
@@ -47,16 +46,8 @@ else {
 <?php foreach ($answers as $ans):?>
 <?php
 $ans_auth = explode(" ", $ans->user_id);
-if($ans->user_id != "admin"){
-	 
-	$username = Users::model()->find("username LIKE '".$ans_auth[0]."'");
-	if($username)
-		$usr = $username->f_name;
-	else 
-		$usr = $ans_auth[0];
-	}
-else 
-	$usr = "admin";
+$username = Users::model()->findByUserid($ans_auth[0]);
+$usr = Users::model()->findNameByUserid($ans->user_id);
 ?>
 <div style="margin:5px; max-width:70px; float:left;padding-right:20px">
 	<div style="height:90px;width:50px">
@@ -69,7 +60,7 @@ else
 </div>
 <div>
 	<?php if($username):?>
-	<h4><b><a href=<?= Yii::app()->baseUrl."/".$ans_auth[0]?>><?= $usr ?></a></b> <?= CHtml::link(CHtml::encode("says"), array('answers/view', 'id'=>$ans->a_id));?> : </h4>
+	<h4><b><a href=<?= Yii::app()->baseUrl."/".$username->username?>><?= $usr ?></a></b> <?= CHtml::link(CHtml::encode("says"), array('answers/view', 'id'=>$ans->a_id));?> : </h4>
 	<?php else:?>
 	<h4><b><?= $usr ?></b> <?= CHtml::link(CHtml::encode("says"), array('answers/view', 'id'=>$ans->a_id));?> : </h4>
 	<?php endif;?>
@@ -77,7 +68,7 @@ else
 	<p class="hint">
 	<?php $date = explode(" ", $ans->add_time)?>
 	Date : <?= $date[0] ?> | Time : <?= $date[1] ?> | 
-	<?php if(Yii::app()->user->getId() == "admin" || Yii::app()->user->getId() == end($ans_auth) || Yii::app()->user->getId() == end($q_auth)):?>
+	<?php if(Yii::app()->user->getId() == "admin" || Users::model()->findIdByUsername(Yii::app()->user->getId()) == end($ans_auth) || Users::model()->findIdByUsername(Yii::app()->user->getId()) == end($q_auth)):?>
 	
 	
 	<?php echo CHtml::link(CHtml::encode('Delete'), array('answers/delete', 'id'=>$ans->a_id),

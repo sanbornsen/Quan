@@ -176,8 +176,14 @@ class AnswersController extends Controller
 		$ques = Question::model()->findByPk($ans->q_id);
 		$ques_auth = explode(" ",$ques->user_id);
 		$ans_auth = explode(" ",$ans->user_id);
-		if(Yii::app()->user->getId() == "admin" || Yii::app()->user->getId() == end($ans_auth) || Yii::app()->user->getId() == end($ques_auth))
+		$curr_user = Yii::app()->user->getId();
+		if($curr_user == "admin" || Users::model()->findIdByUsername($curr_user) == end($ans_auth) || Users::model()->findIdByUsername($curr_user) == end($ques_auth)){
 			$this->loadModel($id)->delete();
+			$nots = Notification::model()->findAll('a_id = '.$id);
+			foreach($nots as $not)
+				$not->delete();
+		}
+			
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))

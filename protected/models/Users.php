@@ -111,4 +111,36 @@ class Users extends CActiveRecord
 		return $this->find('username LIKE "'.$username.'"');
 	}
 
+	public function findIdByUsername($username){
+		$user = $this->find('username LIKE "'.$username.'"');
+		return $user->user_id;
+	}
+
+	public function findByUserid($id){
+		return $this->findByPk($id);
+	}
+
+	public function findNameByUsername($username){
+		$username = explode(' ',$username);
+		if($username[0]=='Anonymous' || $username[0]=='Anonymus'){
+			return 'Anonymous User';
+		}
+		else{
+			$user = self::findByUsername(end($username));
+			return ucwords($user->f_name)." ".ucwords($user->l_name);
+		}
+	}
+	
+	public function findNameByUserid($id){
+		$id = explode(' ',$id);
+		if($id[0]=='Anonymous' || $id[0]=='Anonymus'){
+			return 'Anonymous User';
+		}
+		else{
+			$user = self::findByUserid(end($id));
+			$name = ucwords($user->f_name)." ".ucwords($user->l_name);
+			return CHtml::link($name, array(Yii::app()->baseUrl.'/../'.urlencode($user->username)));
+		}
+	}
+
 }

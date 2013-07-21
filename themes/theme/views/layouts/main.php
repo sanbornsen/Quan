@@ -1,7 +1,7 @@
 <?php 
 if(!Yii::app()->user->isGuest && Yii::app()->user->getId()!='admin'){
-	$user = Users::model()->find("username LIKE '".Yii::app()->user->getId()."'");
-	$last_not = Notification::model()->findAll("not_id > ".$user->last_not." AND person1 NOT LIKE '".$user->username."'");
+	$user = Users::model()->find("user_id = ".Users::model()->findIdByUsername(Yii::app()->user->getId()));
+	$last_not = Notification::model()->findAll("not_id > ".$user->last_not." AND person1 != ".$user->user_id);
 	$not_num = " (".count($last_not).")";
 }
 else{
@@ -203,7 +203,7 @@ $(document).ready(function(){
         array(
             'class'=>'bootstrap.widgets.TbMenu',
             'items'=>array(
-        		array('label'=>'Profile', 'url'=>array('/'.Yii::app()->user->getId()), 'visible'=>!Yii::app()->user->isGuest),
+        		array('label'=>'Profile', 'url'=>array('/'.urlencode(Yii::app()->user->getId())), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Home', 'url'=>array('/site/index'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 				array('label'=>'Notification'.$not_num, 'url'=>array('/question/notification'), 'visible'=>!Yii::app()->user->isGuest),
@@ -215,11 +215,22 @@ $(document).ready(function(){
     ),
 )); ?>
 
+<script type="text/javascript">
+	function srch(val){
+		if(val == 'People'){
+			document.getElementById('search-form').setAttribute('action','<?= $this->createAbsoluteUrl('users/search') ?>');
+		}
+		else{
+			document.getElementById('search-form').setAttribute('action','<?= $this->createAbsoluteUrl('question/search') ?>');
+		}
+	}
+	
+</script>
 <div class="container" id="page">
 	<?php if(!Yii::app()->user->isGuest):?>
            <center>
                 <form action="<?= $this->createAbsoluteUrl('question/search') ?>" method="GET" id="search-form" autocomplete="off">
-				<select class="selectpicker" data-width="100px" id="TestForm_dropdown" name="choice">
+				<select onchange="javascript:srch(this.value)" class="selectpicker" data-width="100px" id="TestForm_dropdown" name="choice">
 					<option value="Question">Question</option>
 					<option value="People">People</option>
 				</select>

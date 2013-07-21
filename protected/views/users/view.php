@@ -32,7 +32,7 @@ $this->menu=array(
 	   			$course = $split[1];
 	   			$from_yr = $split[2];
 	   			$to_yr = $split[3];
-	   			if($to_yr >= date("Y")):
+	   			if(strtotime($to_yr) >= strtotime(date("d-m-Y"))):
 	   		?>
 	   		<li> Persuing <?= $course ?> from <b><?= $college_name ?></b>.</li>
 	   		<?php else:?>
@@ -56,7 +56,7 @@ $this->menu=array(
 	   			$post = $split[1];
 	   			$from_yr = $split[2];
 	   			$to_yr = $split[3];
-	   			if($to_yr >= date("Y")):
+	   			if(strtotime($to_yr) >= strtotime(date("d-m-Y"))):
 	   		?>
 	   		<li> Working at <b><?= $company_name ?></b> as <?= $post ?>.</li>
 	   		<?php else:?>
@@ -70,7 +70,7 @@ $this->menu=array(
 
 <div>
 		<?php if(sizeof($dataProvider)>0):?>
-			<h4> Questions asked by <?= $model->f_name ?></h4>
+			<h4> Questions asked by <?= ucwords($model->f_name) ?></h4>
 		<?php endif;?>
 		<?php $this->widget('zii.widgets.CListView', array(
 		'dataProvider'=>$dataProvider,

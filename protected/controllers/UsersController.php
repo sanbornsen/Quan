@@ -52,11 +52,11 @@ class UsersController extends Controller
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
-	 */
+	 
 	public function actionView($id)
 	{
 		$model = $this->loadModel($id);
-		$dataProvider = new CActiveDataProvider('Question',array('criteria'=>array('condition'=>'user_id LIKE "'.$model->username.'"','order'=>'q_id DESC'),));
+		$dataProvider = new CActiveDataProvider('Question',array('criteria'=>array('condition'=>'user_id = "'.$model->user_id.'"','order'=>'q_id DESC'),));
 		if($model->username == Yii::app()->user->getId() && ($model->image == "" || $model->education == "" || $model->job == "")){
 			$this->render('update',array(
 			'model'=>$model,
@@ -69,13 +69,13 @@ class UsersController extends Controller
 			));
 		}
 	}
-	
+	*/
 	/**
 	 * Another action for views users
 	 */
 	public function actionViews($id)
 	{
-		$user = Users::model()->find("username LIKE '".$id."'");
+		$user = Users::model()->find("username LIKE '".urldecode($id)."'");
 		$id = $user->user_id;
 		$model = $this->loadModel($id);
 		if($model->username == Yii::app()->user->getId() && ($model->image == "" || $model->education == "" || $model->job == "")){
@@ -84,7 +84,7 @@ class UsersController extends Controller
 			));
 		}
 		else{
-			$dataProvider = new CActiveDataProvider('Question',array('criteria'=>array('condition'=>'user_id LIKE "'.$model->username.'"','order'=>'q_id DESC'),));
+			$dataProvider = new CActiveDataProvider('Question',array('criteria'=>array('condition'=>'user_id = '.$model->user_id,'order'=>'q_id DESC'),));
 			$this->render('view',array(
 				'model'=>$model,
 				'dataProvider'=>$dataProvider,
