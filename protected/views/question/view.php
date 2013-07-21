@@ -34,7 +34,13 @@ else {
 
 <h2><?php echo $model->q_body; ?></h2>
 <?php $date = explode(" ", $model->add_time)?>
-<p class="hint">by <?= Users::model()->findNameByUserid($model->user_id) ?>  Date : <?= $date[0] ?> | Time : <?= $date[1] ?></p>
+<p class="hint">by <?= Users::model()->findNameByUserid($model->user_id) ?>  Date : <?= $date[0] ?> | Time : <?= $date[1] ?> | 
+	<?php if(in_array($model->q_id, $q_following)):?>
+		<a href="javascript:questionfollow(<?=$model->q_id?>)" id = "qfollow_<?=$model->q_id?>" class="btn btn-mini">Unfollow this question</a>
+	<?php else:?>
+		<a href="javascript:questionfollow(<?=$model->q_id?>)" id = "qfollow_<?=$model->q_id?>" class="btn btn-primary btn-mini">Follow this question</a>
+	<?php endif;?>
+</p>
 <?php if($model->q_desc != ''):?>
 			<b>Description:</b>
 			<br><?= $model->q_desc ?>

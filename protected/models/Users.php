@@ -132,6 +132,7 @@ class Users extends CActiveRecord
 	}
 	
 	public function findNameByUserid($id){
+		//die(var_dump($id));
 		$id = explode(' ',$id);
 		if($id[0]=='Anonymous' || $id[0]=='Anonymus'){
 			return 'Anonymous User';
@@ -142,5 +143,7 @@ class Users extends CActiveRecord
 			return CHtml::link($name, array(Yii::app()->baseUrl.'/../'.urlencode($user->username)));
 		}
 	}
+	
+	
 
 }

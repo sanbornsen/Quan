@@ -85,6 +85,76 @@ else
 xmlhttp.send();
 }
 
+// For following users
+
+function userfollow(id,user)
+{
+var baseurl = '<?=Yii::app()->baseUrl?>';
+var xmlhttp;
+var id1 = "follow_"+id;
+var id2 = "follow_"+id;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    //document.getElementById(id2).innerHTML=xmlhttp.responseText;
+	if(xmlhttp.responseText == '1'){
+		document.getElementById(id1).innerHTML="Unfollow "+user;
+		$("#"+id1).removeClass("btn-primary");
+		}
+	else{
+		document.getElementById(id1).innerHTML="Follow "+user;
+		$("#"+id1).addClass("btn-primary");
+		}
+	}
+  }
+ xmlhttp.open("GET",baseurl+"/users/follow/"+id,true);
+ xmlhttp.send();
+}
+
+// For following question
+
+function questionfollow(id)
+{
+var baseurl = '<?=Yii::app()->baseUrl?>';
+var xmlhttp;
+var id1 = "qfollow_"+id;
+var id2 = "qfollow_"+id;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    //document.getElementById(id2).innerHTML=xmlhttp.responseText;
+	if(xmlhttp.responseText == '1'){
+		document.getElementById(id1).innerHTML="Unfollow this question";
+		$("#"+id1).removeClass("btn-primary");
+		}
+	else{
+		document.getElementById(id1).innerHTML="Follow this question";
+		$("#"+id1).addClass("btn-primary");
+		}
+	}
+  }
+ xmlhttp.open("GET",baseurl+"/question/follow/"+id,true);
+ xmlhttp.send();
+}
+
 
 function addeduField($id){ //Education form
 	 var parent = document.getElementById("education"+$id);

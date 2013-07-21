@@ -36,7 +36,7 @@ class UsersController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('views','view','update','verify',),
+				'actions'=>array('views','view','update','verify','follow'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -77,16 +77,21 @@ class UsersController extends Controller
 	{
 		$user = Users::model()->find("username LIKE '".urldecode($id)."'");
 		$id = $user->user_id;
+		$current_id = Users::model()->findIdByUsername(Yii::app()->user->getId());
+		$following = Follow::model()->findByPk($current_id);
+		$following = explode(",",$following->user_following);
 		$model = $this->loadModel($id);
 		if($model->username == Yii::app()->user->getId() && ($model->image == "" || $model->education == "" || $model->job == "")){
 			$this->render('update',array(
 			'model'=>$model,
+			'following'=>$following,
 			));
 		}
 		else{
 			$dataProvider = new CActiveDataProvider('Question',array('criteria'=>array('condition'=>'user_id = '.$model->user_id,'order'=>'q_id DESC'),));
 			$this->render('view',array(
 				'model'=>$model,
+				'following'=>$following,
 				'dataProvider'=>$dataProvider,
 			));
 		}
@@ -361,6 +366,56 @@ class UsersController extends Controller
 		else {
 			echo "<div class='alert alert-error'>Wrong verification code. Try again!</div>";
 		}
+	}
+	
+	
+	public function actionFollow($id){
+		$current_id = Users::model()->findIdByUsername(Yii::app()->user->getId());
+		$follow = Follow::model()->findByPk($current_id);
+		if(!$follow){
+			$follow = new Follow;
+			$follow->user_id = $current_id;
+			//$follow->save(false);
+		}
+		$following = Follow::model()->findByPk($id);
+		if(!$following){
+			$following = new Follow;
+			$following->user_id = $id;
+			//$following->save(false);
+		}
+		$user_following = explode(",",$follow->user_following);
+		$pos = array_search($id, $user_following);
+		//die(var_dump($pos));
+		if(!$pos){
+			$user_following[] = $id;
+			//if($user_following[0]=="")unset($user_following[0]);
+			$follow->user_following = implode(",",$user_following);
+			$follow->save(false);
+			$follower = explode(",",$following->user_follower);
+			$follower[] = $current_id;
+			//if($follower[0]=="")unset($follower[0]);
+			$following->user_follower = implode(",",$follower);
+			$following->save(false);
+			$not = new Notification;
+			$not->person1 = $current_id;
+			$not->person2 = $id;
+			$not->activity = 'follow';
+			$not->save(false);
+			echo '1';
+		}
+		else{
+			unset($user_following[$pos]);
+			$follow->user_following = implode(",",$user_following);
+			$follow->save(false);
+			$follower = explode(",",$following->user_follower);
+			$pos1 = array_search($current_id, $follower);
+			unset($follower[$pos1]);
+			$following->user_follower = implode(",",$follower);
+			$following->save(false);
+			$not = Notification::model()->find('person1 = '.$current_id.' AND person2 = '.$id.' AND activity LIKE "follow"');
+			if($not)$not->delete();
+			echo '0';
+		}	
 	}
 	
 	function resize_image($file, $w, $h, $crop=FALSE) {

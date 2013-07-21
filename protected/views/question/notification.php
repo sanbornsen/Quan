@@ -78,7 +78,22 @@ foreach ($dataProvider->getData() as $data):
 			echo $person1_name." has voted up an ".CHtml::link(CHtml::encode("Answer"), array('answers/view', 'id'=>$data->a_id))." posted by you.";
 		}
 	if($data->activity == "question"){ // Who ever asked a new question
-		echo $person1_name." has asked a new ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id)).".";
+		$output = $person1_name." has asked a new ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id)).".";
+		$output .= CHtml::link(CHtml::encode(Question::model()->getBodyById($data->q_id)), array('question/view', 'id'=>$data->q_id));
+		echo $output;
+	}
+	if($data->activity == "follow"){
+		if($data->person2){
+			if(Users::model()->findIdByUsername(Yii::app()->user->getId()) == end($person2))
+				echo $person1_name." is now <b>following</b> You.";
+			else
+				echo $person1_name." is now <b>following</b> ".$person2_name.".";
+		}
+		if($data->q_id){
+			$output = $person1_name." is following a ".CHtml::link(CHtml::encode("Question"), array('question/view', 'id'=>$data->q_id))."</br>";
+			$output .= CHtml::link(CHtml::encode(Question::model()->getBodyById($data->q_id)), array('question/view', 'id'=>$data->q_id));
+			echo $output;
+		}
 	}
 ?>
 </div>

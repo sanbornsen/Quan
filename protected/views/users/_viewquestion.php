@@ -46,8 +46,7 @@
 
 	<br>
 	<?php $date = explode(" ", $data->add_time)?>
-	Date : <?= $date[0] ?> | Time : <?= $date[1] ?> |  <a class="btn btn-primary btn-mini">Follow this question</a>
-	
+	Date : <?= $date[0] ?> | Time : <?= $date[1] ?> 	
 	</div>
 </div>
 

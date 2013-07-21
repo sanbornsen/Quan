@@ -23,6 +23,7 @@
 		$author = Users::model()->findNameByUserid($data->user_id);
 		echo $author;
 	 ?>
+	 
 	<br />
 	<?php $answer = Answers::model()->findAll(array("condition"=>"q_id = ".$data->q_id,"order"=>"a_id DESC"));
 		  $answer_auth = array();
@@ -46,7 +47,7 @@
 
 	<br>
 	<?php $date = explode(" ", $data->add_time)?>
-	Date : <?= $date[0] ?> | Time : <?= $date[1] ?> | <a class="btn btn-primary btn-mini">Follow</a>
+	Date : <?= $date[0] ?> | Time : <?= $date[1] ?>
 	</div>
 </div>
 

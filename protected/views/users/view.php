@@ -13,7 +13,16 @@ $this->menu=array(
 	array('label'=>'Edit Profile', 'url'=>array('users/update')),
 );
 ?>
-<h3 style="padding-left:10px"><?php echo ucwords($model->f_name)." ".ucwords($model->l_name); ?></h3>
+<div class="span3"></div>
+<span style="font-size:15pt"><?php echo Users::model()->findNameByUserid($model->user_id); ?></span>
+<?php if(Yii::app()->user->getId() != $model->username):?>
+ | 
+ <?php if(!in_array($model->user_id,$following)):?>
+ 	<a id="follow_<?=$model->user_id?>" href="javascript:userfollow(<?=$model->user_id?>,'<?=ucwords($model->f_name)?>')" class="btn btn-primary btn-mini">Follow <?=ucwords($model->f_name)?></a>
+ <?php else:?>
+ 	<a id="follow_<?=$model->user_id?>" href="javascript:userfollow(<?=$model->user_id?>,'<?=ucwords($model->f_name)?>')" class="btn btn-mini">Unfollow <?=ucwords($model->f_name)?></a>
+ <?php endif;?>
+<?php endif;?>
 <div class="span9" style="margin-left:-20px">
 	<div class="span3">
 		<img alt="<?= $model->f_name." ".$model->l_name ?>" src="<?= Yii::app()->baseUrl."/images/users/".$model->image ?>" style="max-height:200px; max-width:200px; float:left; border-style:solid; border-width:2px" >

@@ -138,4 +138,11 @@ class Question extends CActiveRecord
 	        return $question;
 		}
 	}
+
+
+	public function getBodyById($id){
+			$ques = $this->findByPk($id);
+			return $ques->q_body;
+		
+	}
 }

@@ -32,7 +32,7 @@ class QuestionController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','notification','search'),
+				'actions'=>array('create','update','delete','notification','search','follow'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -90,10 +90,14 @@ class QuestionController extends Controller
 			
 		else {
 			$answers = Answers::model()->findAll("q_id = ".$id);
+			$current_id = Users::model()->findIdByUsername(Yii::app()->user->getId());
+			$q_following = Follow::model()->findByPk($current_id);
+			$q_following = explode(",",$q_following->question_following);
 			$this->render('view',array(
 				'model'=>$this->loadModel($id),
 				'answers'=>$answers,
 				'current_user_id'=>$u_id,
+				'q_following'=>$q_following,
 			));
 		}
 	}
@@ -282,6 +286,38 @@ class QuestionController extends Controller
 			echo implode("\n", $output);
 	}
 	
+	
+	public function actionFollow($id){
+		$current_id = Users::model()->findIdByUsername(Yii::app()->user->getId());
+		$follow = Follow::model()->findByPk($current_id);
+		if(!$follow){
+			$follow = new Follow;
+			$follow->user_id = $current_id;
+			$follow->question_following = "";
+		}
+		$question_following = explode(",",$follow->question_following);
+		$pos = array_search($id, $question_following);
+		if(!$pos){
+			$question_following[] = $id;
+			//if($user_following[0]=="")unset($user_following[0]);
+			$follow->question_following = implode(",",$question_following);
+			$follow->save(false);
+			$not = new Notification;
+			$not->person1 = $current_id;
+			$not->q_id = $id;
+			$not->activity = 'follow';
+			$not->save(false);
+			echo '1';
+		}
+		else{
+			unset($question_following[$pos]);
+			$follow->question_following = implode(",",$question_following);
+			$follow->save(false);
+			$not = Notification::model()->find('person1 = '.$current_id.' AND q_id = '.$id.' AND activity LIKE "follow"');
+			if($not)$not->delete();
+			echo '0';
+		}	
+	}
 	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
