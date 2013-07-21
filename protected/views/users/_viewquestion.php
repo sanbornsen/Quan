@@ -15,7 +15,7 @@
 			<?php endif;?>
 		</div>
 	</div>
-	<b><?php echo CHtml::link(CHtml::encode($data->q_body), array('view', 'id'=>$data->q_id)); ?></b>
+	<b><?php echo CHtml::link(CHtml::encode($data->q_body), array('question/view', 'id'=>$data->q_id)); ?></b>
 	<br />
 	
 	<?php echo "by " ?>
@@ -46,7 +46,7 @@
 
 	<br>
 	<?php $date = explode(" ", $data->add_time)?>
-	Date : <?= $date[0] ?> | Time : <?= $date[1] ?> |  <a class="btn btn-primary btn-mini">Follow</a>
+	Date : <?= $date[0] ?> | Time : <?= $date[1] ?> |  <a class="btn btn-primary btn-mini">Follow this question</a>
 	
 	</div>
 </div>
