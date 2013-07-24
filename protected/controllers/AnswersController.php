@@ -69,7 +69,7 @@ class AnswersController extends Controller
 			$model = $this->loadModel($id);
 			$curr_user = Users::model()->find('username LIKE "'.Yii::app()->user->getId().'"');
 			$answer_auth = $model->user_id;
-			$voter = $curr_user->username;
+			$voter = $curr_user->user_id;
 			
 			$model_not = new Notification;
 			$model_not->person1 = $voter;
