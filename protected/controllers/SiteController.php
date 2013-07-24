@@ -41,9 +41,7 @@ class SiteController extends Controller
 					'actions'=>array('login'),
 					'users'=>array('@'),
 				),
-				array('deny',  // deny all users
-				'users'=>array('*'),
-				),
+				
 			);
 		}
 
