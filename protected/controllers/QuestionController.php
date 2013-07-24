@@ -43,6 +43,9 @@ class QuestionController extends Controller
 				'actions'=>'suggestions',  // deny all users
 				'users'=>array('*'),
 			),
+			array('deny',
+					'users'=>('*');
+			),
 		);
 	}
 	
