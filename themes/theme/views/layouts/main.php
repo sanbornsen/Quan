@@ -350,7 +350,6 @@ $(document).ready(function(){
 		<input type='text' name='verify' id='verify' placeholder="Code here"/> </br> <button class="btn btn-primary" onClick="verify()">Verify</button> </br>	</div>
 	<div class="modal-footer">
 		<span style="float:left" id="verification_reply"></span>
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	</div>
 </div>
 
