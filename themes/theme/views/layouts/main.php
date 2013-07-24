@@ -217,7 +217,7 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     document.getElementById("verification_reply").innerHTML=xmlhttp.responseText;
-    if(xmlhttp.responseText == '<div class='alert alert-success'>Thank you for verification.</div>')
+    if(xmlhttp.responseText == "<div class='alert alert-success'>Thank you for verification.</div>")
     $('#myModal').modal('hide');
     }
   }
