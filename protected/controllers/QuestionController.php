@@ -44,7 +44,7 @@ class QuestionController extends Controller
 				'users'=>array('*'),
 			),
 			array('deny',
-					'users'=>('*');
+					'users'=>('*'),
 			),
 		);
 	}
