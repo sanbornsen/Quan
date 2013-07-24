@@ -39,9 +39,19 @@ if($model->user_id != "admin"){
 	}
 else 
 	$usr = "admin";
+$username = Users::model()->findByUserid($usr);
 ?>
+<div style="margin:5px; max-width:70px; float:left;padding-right:20px">
+	<div style="height:90px;width:50px">
+		<?php if($username):?>
+			<img alt="<?=$ans_auth[0]?>" src="<?= Yii::app()->baseUrl.'/images/users/thumbs/thumb_'.$username->image ?>" height="80px" width="50px"></img>
+		<?php else:?>
+			<img alt="<?=$ans_auth[0]?>" src="<?= Yii::app()->baseUrl.'/images/users/unknown.jpg' ?>" height="70px" width="50px"></img>
+		<?php endif;?>
+	</div>
+</div>
 <div>
-	<h4><b><?= $usr ?> </b> says : </h4>
+	<h4><b><?= Users::model()->findNameByUserid($usr) ?> </b> says : </h4>
 	<font size="3"><?= $model->a_body ?></font>
 	<p class="hint">
 	<?php $date = explode(" ", $model->add_time)?>
