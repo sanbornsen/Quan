@@ -125,7 +125,6 @@ class UsersController extends Controller
 				$message .= '<br>If you have any question or suggestion for us, please drop a mail on <a href="mailto:knowledge@quanz.in">knowledge[at]quanz.in</a>. We hope you will like it.</p>';
 				$message .= '<br><br><i>Thanks and regards, </i>';
 				$message .= '<br><i><strong>Team Quanz</strong></i>';
-				die(var_dump($message));
 				$headers = "From: service@quanz.in \r\n";
 				$headers .= "Reply-To: service.quanz.in \r\n";
  				$headers .= "MIME-Version: 1.0\r\n";
