@@ -268,10 +268,12 @@ class UsersController extends Controller
 				$ext = explode('.',$_FILES['image']['name']);
 				$ext = end($ext);
 				$url = dirname(__FILE__)."/../../images/users/";
-				move_uploaded_file($_FILES["image"]["tmp_name"],$url.$model->username.".".$ext);
-				copy($url.$model->username.".".$ext,$url."thumbs/thumb_".$model->username.".".$ext);
-				self::resize_image($url.$model->username.".".$ext, 300, 300);
-				self::resize_image($url."thumbs/thumb_".$model->username.".".$ext, 100, 100);
+				
+				//die(var_dump($url."thumbs/thumb_".$model->username.".".$ext));
+				move_uploaded_file($_FILES["image"]["tmp_name"],dirname(__FILE__)."/../../images/users/".$model->username.".".$ext);
+				copy(dirname(__FILE__)."/../../images/users/".$model->username.".".$ext,dirname(__FILE__)."/../../images/users/"."thumbs/thumb_".$model->username.".".$ext);
+				self::resize_image(dirname(__FILE__)."/../../images/users/".$model->username.".".$ext, 300, 300);
+				self::resize_image(dirname(__FILE__)."/../../images/users/"."thumbs/thumb_".$model->username.".".$ext, 100, 100);
 				$model->image = $model->username.".".$ext;
 			}
 			
