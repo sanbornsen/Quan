@@ -117,10 +117,18 @@ class UsersController extends Controller
 			if($model->save()){
 				$to = $_POST['Users']['email_id'];
 				$from = 'service@quanz.in';
-				$subject = 'New Registration';
-				$message = 'Dear '.$_POST['Users']['f_name'].',';
-				$message .= 'Thank you for your registration. Your email verification code is '.$code;
-				$headers = 'From: '.$from;
+				$subject = 'Welcome to Quanz - The knowledge campus';
+				$message = '<html><body>';
+				$message .= 'Dear <strong>'.$_POST['Users']['f_name'].'</strong>,</br>';
+				$message .= '<p>Thank you for your registration. Your email verification code is <strong>'.$code.'</strong>. ';
+				$message .= '<br>If you have any question or suggestion for us, please drop a mail on <a href="mailto:knowledge@quanz.in">knowledge[at]quanz.in</a>. We hope you will like it</p>';
+				$message .= '<br><br><i>Thanks and regards </i>';
+				$message .= '<br><i><strong>Team Quanz</strong></i>';
+				
+				$headers = "From: service@quanz.in \r\n";
+				$headers .= "Reply-To: service.quanz.in \r\n";
+ 				$headers .= "MIME-Version: 1.0\r\n";
+				$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 				mail($to, $subject, $message, $headers);
 				$_SESSION['msg']['signup'] = 'This looks great..!! <br> Now you are ready to login. Please check your email for the email verification code.';
 				$this->redirect(array('site/login'));
@@ -259,10 +267,11 @@ class UsersController extends Controller
 			if($_FILES['image']['name']!='' && $_FILES['image']['size']<1500000 && !$_FILES['image']['error']){
 				$ext = explode('.',$_FILES['image']['name']);
 				$ext = end($ext);
-				move_uploaded_file($_FILES["image"]["tmp_name"],"../".Yii::app()->baseUrl."/images/users/".$model->username.".".$ext);
-				copy("../".Yii::app()->baseUrl."/images/users/".$model->username.".".$ext,"../".Yii::app()->baseUrl."/images/users/thumbs/thumb_".$model->username.".".$ext);
-				self::resize_image("../".Yii::app()->baseUrl."/images/users/".$model->username.".".$ext, 300, 300);
-				self::resize_image("../".Yii::app()->baseUrl."/images/users/thumbs/thumb_".$model->username.".".$ext, 100, 100);
+				$url = dirname(__FILE__)."/../../images/users/";
+				move_uploaded_file($_FILES["image"]["tmp_name"],$url.$model->username.".".$ext);
+				copy($url.$model->username.".".$ext,$url."thumbs/thumb_".$model->username.".".$ext);
+				self::resize_image($url.$model->username.".".$ext, 300, 300);
+				self::resize_image($url."thumbs/thumb_".$model->username.".".$ext, 100, 100);
 				$model->image = $model->username.".".$ext;
 			}
 			
